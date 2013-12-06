@@ -77,6 +77,9 @@ public final class Vector2 {
         float dy = y - other.y;
         return (dx * dx) + (dy * dy);
     }
+    
+    
+
 
     public final float normalize() {
         final float magnitude = length();

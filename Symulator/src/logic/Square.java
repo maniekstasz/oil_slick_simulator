@@ -8,7 +8,8 @@ public class Square implements ComponentManager, SymulatorObject {
 	
 	private List<OilPoint> oilPoints;
 	private List<OilPointComponent> oilPointComponents;
-	
+	Vector2 wind;  // m/s
+	Vector2 current;  // m/s
 	
 	public Square(Vector2 position, int componentsSize) {
 		this.position = position;
