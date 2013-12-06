@@ -18,7 +18,7 @@ public class InfluenceOfWindComponent extends PhasedComponentImpl implements
 
 	@Override
 	public void update(Square square, float timeDelta, OilPoint oilPoint) {
-		Vector2 velocityOfWind = square.wind;
+		Vector2 velocityOfWind = square.getWind();
 		float speedOfWind = velocityOfWind.length();
 		float theta = 0; // publikacja oil.pdf (wzór 15)
 		if (speedOfWind < 25) {

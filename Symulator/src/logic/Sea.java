@@ -11,7 +11,7 @@ public class Sea implements ComponentManager, SymulatorObject {
 	private Square[][] squares;
 	private List<SquareComponent> squareComponents;
 
-	private ElipseSystem elipseSystem;
+	private SpreadingSystem spreadingSystem;
 	public Sea(int x, int y, int componentListSize){
 		this.x = x;
 		this.y = y;
@@ -26,7 +26,7 @@ public class Sea implements ComponentManager, SymulatorObject {
 	
 	public void update(float timeDelta){
 		// TODO: create some list of systems
-		elipseSystem.update(timeDelta, this);
+		spreadingSystem.update(timeDelta, this);
 		for(int x = 0; x < squares.length; x++){
 			for(int y = 0; y < squares[x].length; y++){
 				for(SquareComponent sc : squareComponents){

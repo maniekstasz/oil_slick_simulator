@@ -16,7 +16,7 @@ OilPointComponent {
 
 	@Override
 	public void update(Square square, float timeDelta, OilPoint oilPoint) {
-		Vector2 velocityOfCurrent = square.current;
+		Vector2 velocityOfCurrent = square.getCurrent();
 		oilPoint.getVelocity().add(alphaC*velocityOfCurrent.x,alphaC*velocityOfCurrent.y);
 		
 	}
