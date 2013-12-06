@@ -1,6 +1,6 @@
 package logic;
 
-public class TimeSystem implements SymulatorObject, SymulatorSystem {
+public class TimeSystem implements SymulatorSystem {
 
 	public TimeSystem(float iNITIAL_TIME_COEFFICIENT) {
 		INITIAL_TIME_COEFFICIENT = iNITIAL_TIME_COEFFICIENT;

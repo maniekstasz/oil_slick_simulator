@@ -17,4 +17,10 @@ public class MovementComponent extends PhasedComponentImpl implements OilPointCo
 		
 	}
 
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

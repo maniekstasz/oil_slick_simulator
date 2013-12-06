@@ -37,4 +37,10 @@ public class InfluenceOfDiffusionComponent extends PhasedComponentImpl implement
 		float yValue = value * (float) sin(theta);
 		oilPoint.getVelocity().add(xValue, yValue);
 	}
+
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
 }

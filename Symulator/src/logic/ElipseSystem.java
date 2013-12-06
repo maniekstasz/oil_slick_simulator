@@ -1,6 +1,6 @@
 package logic;
 
-public class ElipseSystem implements SymulatorObject, SymulatorSystem{
+public class ElipseSystem implements SymulatorSystem{
 
 	
 	private final TimeSystem timeSystem;

@@ -16,4 +16,10 @@ OilPointComponent {
 		
 	}
 
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -20,5 +20,10 @@ OilPointComponent {
 		oilPoint.getVelocity().add(alphaC*velocityOfCurrent.x,alphaC*velocityOfCurrent.y);
 		
 	}
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

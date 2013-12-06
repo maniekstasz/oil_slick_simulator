@@ -21,7 +21,7 @@ public class Sea implements ComponentManager, SymulatorObject {
 	
 	@Override
 	public void reset() {
-		squares = new Square[x][y];
+		
 	}
 	
 	public void update(float timeDelta){
