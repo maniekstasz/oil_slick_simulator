@@ -24,6 +24,7 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 	private float previousVolume;
 	private float contentOfWater;
 	private float previouscontentOfWater;
+	
 
 	private float actualArea;
 
