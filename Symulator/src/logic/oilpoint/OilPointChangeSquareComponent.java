@@ -9,6 +9,7 @@ public class OilPointChangeSquareComponent extends PhasedComponentImpl implement
 
 	private final OilPointSquareSystem oilPointSquareSystem;
 	
+	
 	public OilPointChangeSquareComponent(OilPointSquareSystem oilPointSquareSystem){
 		super(Phase.POST_MOVEMENT.ordinal());
 		this.oilPointSquareSystem = oilPointSquareSystem;

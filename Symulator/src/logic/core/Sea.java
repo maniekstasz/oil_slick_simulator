@@ -11,6 +11,7 @@ import logic.oilpoint.OilPointChangeSquareComponent;
 import logic.square.Square;
 import logic.square.SquareComponent;
 import login.system.OilPointSquareSystem;
+import login.system.SpillSystem;
 import login.system.SpreadingSystem;
 
 public class Sea implements ComponentManager, SymulatorObject {
@@ -21,6 +22,7 @@ public class Sea implements ComponentManager, SymulatorObject {
 
 	private  SpreadingSystem spreadingSystem;
 	private OilPointSquareSystem oilPointSquareSystem;
+	private SpillSystem spillSystem;
 	public Sea(int x, int y){
 		this.x = x;
 		this.y = y;
@@ -48,6 +50,7 @@ public class Sea implements ComponentManager, SymulatorObject {
 	public void update(float timeDelta){
 		// TODO: create some list of systems
 		spreadingSystem.update(timeDelta, this);
+		spillSystem.update(timeDelta, this);
 		for(int x = 0; x < squares.length; x++){
 			for(int y = 0; y < squares[x].length; y++){
 				for(SquareComponent sc : squareComponents){
@@ -89,6 +92,10 @@ public class Sea implements ComponentManager, SymulatorObject {
 
 	public void setOilPointSquareSystem(OilPointSquareSystem oilPointSquareSystem) {
 		this.oilPointSquareSystem = oilPointSquareSystem;
+	}
+
+	public void setSpillSystem(SpillSystem spillSystem) {
+		this.spillSystem = spillSystem;
 	}
 
 

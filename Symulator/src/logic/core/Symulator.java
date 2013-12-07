@@ -16,6 +16,7 @@ import logic.square.Square;
 import login.system.DifferentalEquationsSpreadingSystem;
 import login.system.DiskSpreadingSystem;
 import login.system.OilPointSquareSystem;
+import login.system.SpillSystem;
 import login.system.TimeSystem;
 
 public class Symulator {
@@ -30,21 +31,28 @@ public class Symulator {
 	
 	
 	public void configure(){
-		int x = 100, y = 100;
+		
+		// Okreœl powierzchnie morza 
+		int x = 2, y = 2;
 		
 		Sea sea = new Sea(x, y);
 		
 		
 		// systems
 		TimeSystem timeSystem = new TimeSystem(1);
-		OilPointSquareSystem oilPointSquareSystem = new OilPointSquareSystem(x, y);
+		
+		// Ostatni parametr to rozmiar kwadratu w metrach
+		OilPointSquareSystem oilPointSquareSystem = new OilPointSquareSystem(x, y, 100);
 //		DifferentalEquationsSpreadingSystem differentalEquationsSpreadingSystem = new DifferentalEquationsSpreadingSystem(timeSystem);
 		DiskSpreadingSystem diskSpreadingSystem = new DiskSpreadingSystem(timeSystem);
+		SpillSystem spillSystem =  new SpillSystem(oilPointSquareSystem);
+		
 		
 		//przemyœleæ dodawanie systemów
 		mainLoop = new MainLoop(timeSystem, sea);
 		sea.setOilPointSquareSystem(oilPointSquareSystem);
 		sea.setSpreadingSystem(diskSpreadingSystem);
+		sea.setSpillSystem(spillSystem);
 		// square components
 		NextRoundOilPointsComponent nextRoundOilPointsComponent = new NextRoundOilPointsComponent(oilPointSquareSystem);
 		sea.addComponent(nextRoundOilPointsComponent);
@@ -64,14 +72,19 @@ public class Symulator {
 				squares[i][j].addComponent(movementComponent);
 				squares[i][j].addComponent(oilPointChangeSquareComponent);
 //				squares[i][j].addComponent(influenceOfCurrentComponent);
-				squares[i][j].addComponent(influenceOfWindComponent);
+//				squares[i][j].addComponent(influenceOfWindComponent);
 //				squares[i][j].addComponent(influenceOfDiffusionComponent);
 //				squares[i][j].addComponent(spreadingComponent);
 			}
 		}
 		
+		//zdefiniuj w którym kwadracie ma pojawiaæ siê ropa i ile oilpunktów ma siê pojawiaæ na sekunde
+		spillSystem.addOilSpill(0, 0, 0.3f);
+//		OilPoint op = new OilPoint(new Vector2(0.0f, 0.0f));
+//		op.getVelocity().add(new Vector2(2.0f, 0.0f));
+//		squares[0][0].setOilPoints(new ArrayList<OilPoint>(Arrays.asList(op)));
 //		squares[0][0].setWind(new Vector2(0.5f,0.0f));
 //		oilPoints.add(new OilPoint(new Vector2(0.5f, 0.5f)));
-//		oilPointSquareSystem.addOilPoint(oilPoints.get(0));
+//		oilPointSquareSystem.addOilPoint(op);
 	}
 }

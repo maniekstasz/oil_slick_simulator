@@ -31,8 +31,16 @@ public class MainLoop implements SymulatorObject {
 			final long time = new Date().getTime();
 			final long timeDelta = time - lastTimeUpdate;
 			lastTimeUpdate = time;
-			timeSystem.update(timeDelta, sea);
+			timeSystem.update((float)timeDelta /1000.0f, sea);
 			sea.update(timeSystem.getRealTimeDelta());
+			if(timeDelta < 16){
+				try {
+					Thread.sleep(16-timeDelta);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
