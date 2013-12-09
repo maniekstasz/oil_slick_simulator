@@ -21,6 +21,15 @@ public class Square implements ComponentManager, SymulatorObject {
 	
 	private Vector2 wind; // m/s
 	private Vector2 current; // m/s
+	private float temperature;
+
+	public void setTemperature(float temperature) {
+		this.temperature = temperature;
+	}
+
+	public float getTemperature() {
+		return temperature;
+	}
 
 	public Vector2 getWind() {
 		return wind;

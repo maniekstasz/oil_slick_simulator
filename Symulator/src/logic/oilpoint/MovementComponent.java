@@ -5,8 +5,8 @@ import logic.core.Vector2;
 import logic.core.PhasedComponentImpl.Phase;
 import logic.square.Square;
 
-public class MovementComponent extends PhasedComponentImpl implements OilPointComponent {
-	
+public class MovementComponent extends PhasedComponentImpl implements
+		OilPointComponent {
 
 	public MovementComponent() {
 		super(Phase.POST_PHISICS.ordinal());
@@ -18,13 +18,14 @@ public class MovementComponent extends PhasedComponentImpl implements OilPointCo
 		float offsetX = velocity.x * timeDelta;
 		float offsetY = velocity.y * timeDelta;
 		oilPoint.getPosition().add(offsetX, offsetY);
-//		oilPoint.getVelocity().zero();
+		oilPoint.getVelocity().zero();
+		System.out.println(oilPoint.getPosition().x+" "+oilPoint.getPosition().y);
 	}
 
 	@Override
 	public void reset() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

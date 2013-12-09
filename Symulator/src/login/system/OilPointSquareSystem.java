@@ -9,6 +9,10 @@ import logic.oilpoint.OilPoint;
 
 public class OilPointSquareSystem implements SymulatorSystem {
 
+	public List<OilPoint>[][] getNextRoundSquares() {
+		return nextRoundSquares;
+	}
+
 	private List<OilPoint>[][] nextRoundSquares;
 	private final float squareDimension; // w metrach
 
@@ -28,6 +32,7 @@ public class OilPointSquareSystem implements SymulatorSystem {
 		float scaledY = position.y / squareDimension;
 		int posX = (int) scaledX;
 		int posY = (int) scaledY;
+		
 		nextRoundSquares[posX][posY].add(oilPoint);
 	}
 	

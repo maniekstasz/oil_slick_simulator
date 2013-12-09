@@ -3,10 +3,12 @@ package login.system;
 import static java.lang.Math.*;
 import logic.core.Sea;
 
+
 public class DiskSpreadingSystem implements SpreadingSystem {
 
 	private float actualDiameter = 0;
-	private float actualDerivativeOfDiameter = 0;
+	private float previousDiameter = 0;
+
 	private final TimeSystem timeSystem;
 
 	/* Parametry */
@@ -14,15 +16,21 @@ public class DiskSpreadingSystem implements SpreadingSystem {
 	private float densityOfOil;
 	private float startVolume;
 	private float constant;
+	private float startDiameter;
 
 	public DiskSpreadingSystem(TimeSystem timeSystem) {
 		this.timeSystem = timeSystem;
 		/* default value */
-		densityOfWater = 800; // [kg/m^3]
-		densityOfOil = 1050; // [kg/m^3]
+		densityOfWater = 1050; // [kg/m^3]
+		densityOfOil = 800; // [kg/m^3]
 		startVolume = 1000; // [m^3]
-		constant = 1.7f;// stochastic.pdf (18)
+		constant = 20f;// stochastic.pdf (18)  //1.7 
+		//startDiameter = (float) (2*112*Math.sqrt(startVolume));  //(30, stochastic.pdf
+		startDiameter=20;
+	}
 
+	public void setStartDiameter(float startDiameter) {
+		this.startDiameter = startDiameter;
 	}
 
 	public void setDensityOfWater(float densityOfWater) {
@@ -50,18 +58,17 @@ public class DiskSpreadingSystem implements SpreadingSystem {
 	@Override
 	public void update(float timeDelta, Sea sea) {
 
-		float time = timeSystem.getTotalRealTime()/60;  //czas w minutach
+		float time = timeSystem.getTotalTime() / 60.0f; // czas w minutach
 		if (densityOfWater > densityOfOil) {
-			actualDiameter = (float) ((constant * pow(
-					(densityOfWater - densityOfOil) / densityOfOil, 1.0 / 3))
-					* pow(startVolume, 1. / 3) * pow(time, 0.25));
-		
-			actualDerivativeOfDiameter=(float) ((constant*0.25 * pow(
-					(densityOfWater - densityOfOil) / densityOfOil, 1.0 / 3))
-					* pow(startVolume, 1. / 3) * pow(time, -0.75));
-		
-		
-		
+			previousDiameter = actualDiameter;
+			actualDiameter = startDiameter
+					+ (float) ((constant * pow((densityOfWater - densityOfOil)
+							/ densityOfOil, 1.0 / 3))
+							* pow(startVolume, 1. / 3) * pow(time, 0.25));
+
+		}
+		if(previousDiameter==0.0f){
+			previousDiameter=actualDiameter;
 		}
 
 	}
@@ -70,8 +77,8 @@ public class DiskSpreadingSystem implements SpreadingSystem {
 		return actualDiameter;
 	}
 
-	public float getActualDerivativeOfDiameter() {
-		return actualDerivativeOfDiameter;
+	public float getPreviousDiameter() {
+		return previousDiameter;
 	}
 
 }
