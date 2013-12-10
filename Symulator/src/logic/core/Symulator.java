@@ -1,5 +1,8 @@
 package logic.core;
 
+import java.io.IOException;
+
+import logic.oilpoint.FileOutputComponent;
 import logic.oilpoint.InfluenceOfCurrentComponent;
 import logic.oilpoint.InfluenceOfDiffusionComponent;
 import logic.oilpoint.InfluenceOfWindComponent;
@@ -18,11 +21,30 @@ import login.system.TimeSystem;
 public class Symulator {
 
 	public static void main(String args[]) {
-		Symulator symulator = new Symulator();
+		final Symulator symulator = new Symulator();
 		symulator.configure();
+		Thread stopping = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					System.out.println("Zatrzymaæ?");
+					System.in.read();
+					symulator.mainLoop.setStop(true);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		
+			}
+		});
+		stopping.start();
 		symulator.mainLoop.loop();
+		
 
 	}
+	
+	
 
 	private MainLoop mainLoop;
 
@@ -42,8 +64,8 @@ public class Symulator {
 		// DifferentalEquationsSpreadingSystem
 		// differentalEquationsSpreadingSystem = new
 		// DifferentalEquationsSpreadingSystem(timeSystem);
-		CenterOfMassSystem centerOfMassSystem = new CenterOfMassSystem(
-				oilPointSquareSystem);
+//		CenterOfMassSystem centerOfMassSystem = new CenterOfMassSystem(
+//				oilPointSquareSystem);
 		//DiskSpreadingSystem diskSpreadingSystem = new DiskSpreadingSystem(
 			//	timeSystem);
 		
@@ -53,7 +75,7 @@ public class Symulator {
 		
 		// przemyœleæ dodawanie systemów
 		mainLoop = new MainLoop(timeSystem, sea);
-		sea.setCenterOfMassSystem(centerOfMassSystem);
+//		sea.setCenterOfMassSystem(centerOfMassSystem);
 		sea.setOilPointSquareSystem(oilPointSquareSystem);
 		sea.setSpreadingSystem(diskSpreadingSystem);
 		sea.setSpillSystem(spillSystem);
@@ -69,10 +91,11 @@ public class Symulator {
 		MovementComponent movementComponent = new MovementComponent();
 		OilPointChangeSquareComponent oilPointChangeSquareComponent = new OilPointChangeSquareComponent(
 				oilPointSquareSystem);
+		FileOutputComponent fileOutputComponent = new FileOutputComponent(timeSystem);
 		SpreadingComponent spreadingComponent = new SpreadingComponent(
 				diskSpreadingSystem, centerOfMassSystem);
 		
-		spillSystem.addOilSpill(500, 500, 5, 10000000, 20f);
+		spillSystem.addOilSpill(500, 500, 1000, 10000000, 20f);
 		
 		Square[][] squares = sea.getSquares();
 		// do przemyœlenia czy dodawaæ do ka¿dego squara
@@ -84,7 +107,8 @@ public class Symulator {
 				// squares[i][j].addComponent(influenceOfCurrentComponent);
 				// squares[i][j].addComponent(influenceOfWindComponent);
 				 squares[i][j].addComponent(influenceOfDiffusionComponent);
-				squares[i][j].addComponent(spreadingComponent);
+				 squares[i][j].addComponent(fileOutputComponent);
+//				squares[i][j].addComponent(spreadingComponent);
 			}
 		}
 

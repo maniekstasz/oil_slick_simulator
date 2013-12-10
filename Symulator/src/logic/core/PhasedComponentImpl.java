@@ -16,6 +16,7 @@ public abstract class  PhasedComponentImpl implements PhasedComponent{
 		PHISICS,
 		POST_PHISICS,
 		POST_MOVEMENT,
+		OUTPUT,
 	}
 	
 	public int getPhase(){

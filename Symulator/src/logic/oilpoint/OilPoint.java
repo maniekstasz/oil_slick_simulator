@@ -7,11 +7,13 @@ public class OilPoint {
 	
 	private Vector2 position;
 	private Vector2 velocity = new Vector2(0.0f, 0.0f);
+	private Long id;
 	// Dalsze pola które bêd¹ modifikowane przez obiekty typu OilPointComponent
 	
 	
 	
-	public OilPoint(Vector2 position) {
+	public OilPoint(Vector2 position, Long id) {
+		this.id = id;
 		this.position = position;
 	}
 
@@ -28,6 +30,16 @@ public class OilPoint {
 	
 	public void update(Square square, float timeDelta){
 		//Tutaj raczej nic nie powinno. Lepiej u¿ywaæ OilPointComponent
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 }

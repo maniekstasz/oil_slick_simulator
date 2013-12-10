@@ -19,7 +19,7 @@ public class MovementComponent extends PhasedComponentImpl implements
 		float offsetY = velocity.y * timeDelta;
 		oilPoint.getPosition().add(offsetX, offsetY);
 		oilPoint.getVelocity().zero();
-		System.out.println(oilPoint.getPosition().x+" "+oilPoint.getPosition().y);
+//		System.out.println(oilPoint.getPosition().x+" "+oilPoint.getPosition().y);
 	}
 
 	@Override

@@ -20,17 +20,29 @@ public class MainLoop implements SymulatorObject {
 	@Override
 	public void reset() {
 		lastTimeUpdate = 0;
-		stop = true;
+		stop = false;
 	}
 
 	public void loop() {
 		// TODO: change for sth more precise
-		
-		while (stop) {
+
+		while (!stop) {
 
 			timeSystem.update(timeSystem.getTimeDelta(), sea);
 			sea.update(timeSystem.getTimeDelta());
 
+		}
+	}
+
+	public boolean isStop() {
+		synchronized (this) {
+			return stop;
+		}
+	}
+
+	public void setStop(boolean stop) {
+		synchronized (this) {
+			this.stop = stop;
 		}
 	}
 

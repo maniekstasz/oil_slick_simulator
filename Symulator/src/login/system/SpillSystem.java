@@ -12,7 +12,7 @@ public class SpillSystem implements SymulatorSystem {
 
 	private final OilPointSquareSystem oilPointSquareSystem;
 	private List<OilSpill> oilSpills = new ArrayList<SpillSystem.OilSpill>();
-
+	private long autoIncrementId = 1;
 	public List<OilSpill> getOilSpills() {
 		return oilSpills;
 	}
@@ -87,7 +87,7 @@ public class SpillSystem implements SymulatorSystem {
 					float r=diameter/2*random.nextFloat();
 					float x = (float) (this.x+r*Math.sin(theta));
 					float y = (float) (this.y+r*Math.cos(theta));
-					oilPoints.add(new OilPoint(new Vector2(x, y)));
+					oilPoints.add(new OilPoint(new Vector2(x, y),autoIncrementId++));
 				}
 				if (oilPiecesAmount > 0) {
 					lastSpill = 0;
