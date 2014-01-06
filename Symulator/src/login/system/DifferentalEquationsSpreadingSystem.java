@@ -10,25 +10,27 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 
 	private final CenterOfMassSystem centerOfMassSystem;
 
-	private float T, W; // wartosci w kazdej iteracji brane z kwadratu
+	private float T; // wartosci w kazdej iteracji brane z kwadratu
 						// zawierajacego srodek ciezkosci
+	private float W;
 	/****************************************************/
 	/* PARAMETRY */
-	private float K;
-	private float B;
-	private float T0;
-	private float Tg;
+	private float K = 1;// ?
+	private float B = 100;// ?
+	private float ANonArea = 1;
+	private float T0 = 301;
+	private float Tg = 500;
 	private float D;
-	private float C3;
-	private float K1;
-	private float C4;
-	private float roW; // gestoœæ wody
-	private float roC; // orginalna gêstoœæ oleju
-	private float st; // wspolczynnik napiecia powierzchniowego
+	private float C3 = 0.7f;
+	private float K1 = 0.001f; // ?
+	private float C4 = 10;
+	private float roW = 1.020f; // gestoœæ wody
+	private float roC = 0.832f; // orginalna gêstoœæ oleju
+	private float st = 1; // wspolczynnik napiecia powierzchniowego
 
 	/************************************************************/
 
-	private float rk4TimeStep=1;
+	private float rk4TimeStep = 0.1f;
 	private RK4 rK4;
 
 	// * wartosci liczone RK4*//
@@ -41,7 +43,6 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 	private static final int A_AREA = 3;
 	private static final int MI_VISCOSITY = 4;
 
-	
 	// *****************************//
 
 	private float previousDiameter;
@@ -78,15 +79,21 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 	}
 
 	class Function {
-		double V0 =startValues[V_VOLUME];
 
-		private double dFe_dt(double t, double A, double Fe) {
-			double result = K * A / V0 * Math.exp(A - B / T * (T0 + Tg * Fe));
+		private double dFe_dt(double t, double Fe) {
+			double V0 = startValues[V_VOLUME];
+
+			double result = K * ANonArea / V0
+					* Math.exp(ANonArea - B / T * (T0 + Tg * Fe));
+
 			return result;
 		}
 
 		private double dV_dt(double t, double dFe_dt, double V) {
-			double result = -V0 * dFe_dt - D * V;
+			double V0 = startValues[V_VOLUME];
+
+			double result =-V0 * dFe_dt-D / 3600 * V;
+		
 			return result;
 		}
 
@@ -98,6 +105,7 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 
 		private double dA_dt(double t, double A, double V) {
 			double result = K1 / A * Math.pow(V, 4. / 3);
+			
 			return result;
 		}
 
@@ -116,11 +124,11 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 			double mi = args[MI_VISCOSITY];
 
 			double[] results = new double[5];
-			results[Fe_EVAPRATION] = dFe_dt(t, A, Fe);
+			results[Fe_EVAPRATION] = dFe_dt(t, Fe);
 			results[V_VOLUME] = dV_dt(t, results[0], V);
 			results[Y_CONT_WATER] = dY_dt(t, Y);
 			results[A_AREA] = dA_dt(t, A, V);
-			results[MI_VISCOSITY] = dmi_dt(mi, dFe_dt(t, A, Fe), Y, dY_dt(t, Y));
+			results[MI_VISCOSITY] = dmi_dt(mi, dFe_dt(t, Fe), Y, dY_dt(t, Y));
 
 			return results;
 
@@ -142,46 +150,54 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 		}
 
 		void solve(float tStart, float tEnd, float delta) {
-
-			for (int count = 0; count * delta < (tEnd - tStart); count++) {
-				float actualTime = tStart + count * delta;
-				k1 = multiple(function.evaluate(actualTime, values), delta);
-				k2 = multiple(
-						function.evaluate(actualTime + delta / 2,
-								add(values, multiple(k1, 0.5))), delta);
-				k3 = multiple(
-						function.evaluate(actualTime + delta / 2,
-								add(values, multiple(k2, 0.5))), delta);
-				k4 = multiple(
-						function.evaluate(actualTime + delta, add(values, k3)),
-						delta);
-				k = multiple(add(add(k1, k2), add(k3, k4)), 1. / 6);
-				values = add(values, k);
+			float actualTime = tStart;
+			while(actualTime < tEnd) {
+				float thicknes = (float) (values[V_VOLUME] / values[A_AREA]);
+				D = (float) (0.11 * (1 + W) * (1 + W) * 1.0 / (1 + 50
+						* Math.pow(values[MI_VISCOSITY], 0.5) * thicknes * st));
+				k1 = function.evaluate(actualTime, values);
+				k2 = function.evaluate(actualTime + delta / 2,
+						add(values, multiple(delta / 2, k1)));
+				k3 = function.evaluate(actualTime + delta / 2,
+						add(values, multiple(delta / 2, k2)));
+				k4 = function.evaluate(actualTime + delta,
+						add(values, multiple(delta, k3)));
+				k = multiple(1. / 6, add(k1, k2, k2, k3, k3, k4)); // trzeba
+																	// pomnioazyc
+				values = add(values, multiple(delta, k));
+				
+//				 values =
+//				 add(values,multiple(delta,function.evaluate(actualTime,
+//				 values)));// EULER
+				actualTime += delta;
 			}
 
 		}
 
-		double[] multiple(double[] vector, double a) {
+		double[] multiple(double a, double[] vector) {
 			double[] result = new double[5];
 			for (int i = 0; i < vector.length; i++) {
 				result[i] = vector[i] * a;
 			}
-			return vector;
+			return result;
 		}
 
-		double[] add(double[] vector, double[] vector2) {
+		double[] add(double[]... vectors) {
+
 			double[] result = new double[5];
-			for (int i = 0; i < vector.length; i++) {
-				result[i] = vector[i] + vector2[i];
+			for (double[] vector : vectors) {
+				for (int i = 0; i < vector.length; i++) {
+					result[i] += vector[i];
+				}
 			}
-			return vector;
+			return result;
 		}
 
 	}
 
 	@Override
 	public void update(float timeDelta, Sea sea) {
-		previousDiameter = (float) Math.sqrt(values[3] * 4 / Math.PI);
+		previousDiameter = (float) Math.sqrt(values[A_AREA] * 4 / Math.PI);
 		Vector2 vectorOfWind = centerOfMassSystem.getWind();
 		if (vectorOfWind != null) {
 			this.W = vectorOfWind.length();
@@ -194,9 +210,7 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 		float deltaTime = timeSystem.getTimeDelta();
 		float density = (float) (values[Fe_EVAPRATION] * roW + (1 - values[Y_CONT_WATER])
 				* (roC + C3 * values[0]));
-		float thicknes = (float) (values[V_VOLUME] / values[A_AREA]);
-		D = (float) (0.11 * (1 + W) * (1 + W) * 1.0 / (1 + 50
-				* Math.pow(values[MI_VISCOSITY], 0.5) * thicknes * st));
+		
 
 		rK4.solve(totalTime, totalTime + deltaTime, rk4TimeStep);
 		diameter = (float) Math.sqrt(values[A_AREA] * 4 / Math.PI);

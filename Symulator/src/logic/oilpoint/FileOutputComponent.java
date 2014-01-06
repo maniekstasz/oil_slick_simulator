@@ -42,8 +42,8 @@ public class FileOutputComponent extends PhasedComponentImpl implements
 				log.createNewFile();
 			}
 			pw = new PrintWriter(new FileWriter(log, true));
-			pw.println(oilPoint.getPosition().x + " "
-					+ oilPoint.getPosition().y + " " + timeSystem.getTotalTime());
+			pw.print(oilPoint.getPosition().x + " "
+					+ oilPoint.getPosition().y/* + " " + timeSystem.getTotalTime()*/);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

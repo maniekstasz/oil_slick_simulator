@@ -24,7 +24,7 @@ public class Symulator {
 		final Symulator symulator = new Symulator();
 		symulator.configure();
 		Thread stopping = new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				try {
@@ -35,23 +35,20 @@ public class Symulator {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-		
+
 			}
 		});
 		stopping.start();
 		symulator.mainLoop.loop();
-		
 
 	}
-	
-	
 
 	private MainLoop mainLoop;
 
 	public void configure() {
 
 		// Okreœl powierzchnie morza
-		int x = 10, y = 10;
+		int x = 1000, y = 1000;
 
 		Sea sea = new Sea(x, y);
 
@@ -64,20 +61,21 @@ public class Symulator {
 		// DifferentalEquationsSpreadingSystem
 		// differentalEquationsSpreadingSystem = new
 		// DifferentalEquationsSpreadingSystem(timeSystem);
-//		CenterOfMassSystem centerOfMassSystem = new CenterOfMassSystem(
-//				oilPointSquareSystem);
-		//DiskSpreadingSystem diskSpreadingSystem = new DiskSpreadingSystem(
-			//	timeSystem);
-		
-		DiskSpreadingSystem diskSpreadingSystem = new DiskSpreadingSystem(timeSystem);
-		
+		CenterOfMassSystem centerOfMassSystem = new CenterOfMassSystem(
+				oilPointSquareSystem);
+//		DiskSpreadingSystem diskSpreadingSystem = new DiskSpreadingSystem(
+//				timeSystem);
+		DifferentalEquationsSpreadingSystem differentalEquationsSpreadingSystem = new DifferentalEquationsSpreadingSystem(
+				centerOfMassSystem, timeSystem);
+		differentalEquationsSpreadingSystem.setupStartValues(0, 1000, 0, 300, 1);
+
 		SpillSystem spillSystem = new SpillSystem(oilPointSquareSystem);
-		
+
 		// przemyœleæ dodawanie systemów
 		mainLoop = new MainLoop(timeSystem, sea);
-//		sea.setCenterOfMassSystem(centerOfMassSystem);
+		sea.setCenterOfMassSystem(centerOfMassSystem);
 		sea.setOilPointSquareSystem(oilPointSquareSystem);
-		sea.setSpreadingSystem(diskSpreadingSystem);
+		sea.setSpreadingSystem(differentalEquationsSpreadingSystem);
 		sea.setSpillSystem(spillSystem);
 		// square components
 		NextRoundOilPointsComponent nextRoundOilPointsComponent = new NextRoundOilPointsComponent(
@@ -91,12 +89,13 @@ public class Symulator {
 		MovementComponent movementComponent = new MovementComponent();
 		OilPointChangeSquareComponent oilPointChangeSquareComponent = new OilPointChangeSquareComponent(
 				oilPointSquareSystem);
-		FileOutputComponent fileOutputComponent = new FileOutputComponent(timeSystem);
+		FileOutputComponent fileOutputComponent = new FileOutputComponent(
+				timeSystem);
 		SpreadingComponent spreadingComponent = new SpreadingComponent(
-				diskSpreadingSystem, centerOfMassSystem);
-		
-		spillSystem.addOilSpill(500, 500, 1000, 10000000, 20f);
-		
+				differentalEquationsSpreadingSystem, centerOfMassSystem);
+
+		spillSystem.addOilSpill(50000, 50000, 2, 10000000, 20f);
+
 		Square[][] squares = sea.getSquares();
 		// do przemyœlenia czy dodawaæ do ka¿dego squara
 
@@ -106,9 +105,9 @@ public class Symulator {
 				squares[i][j].addComponent(oilPointChangeSquareComponent);
 				// squares[i][j].addComponent(influenceOfCurrentComponent);
 				// squares[i][j].addComponent(influenceOfWindComponent);
-				 squares[i][j].addComponent(influenceOfDiffusionComponent);
-				 squares[i][j].addComponent(fileOutputComponent);
-//				squares[i][j].addComponent(spreadingComponent);
+				squares[i][j].addComponent(influenceOfDiffusionComponent);
+				squares[i][j].addComponent(fileOutputComponent);
+				squares[i][j].addComponent(spreadingComponent);
 			}
 		}
 

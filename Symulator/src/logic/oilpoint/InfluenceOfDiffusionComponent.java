@@ -11,7 +11,7 @@ import static java.lang.Math.*;
 public class InfluenceOfDiffusionComponent extends PhasedComponentImpl implements
 		OilPointComponent {
 
-	float diffusionCoefficent = 1.86E-6f; // default value, m^2/s, przyk³adowa
+	float diffusionCoefficent = 10; // default value, m^2/s, przyk³adowa
 											// wartoœæ, trzeba poszukaæ w
 											// artykule np. tym
 											// "Crude oil dissolution in saline water"
