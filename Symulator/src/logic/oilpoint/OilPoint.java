@@ -3,6 +3,12 @@ package logic.oilpoint;
 import logic.core.Vector2;
 import logic.square.Square;
 
+/**
+ * Klasa reprezentuj¹ca cz¹stkê ropy. 
+ * 
+ * @author Szymon Konicki
+ *
+ */
 public class OilPoint {
 	
 	private Vector2 position;

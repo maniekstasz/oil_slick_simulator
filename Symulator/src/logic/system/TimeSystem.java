@@ -1,7 +1,12 @@
-package login.system;
+package logic.system;
 
 import logic.core.Sea;
 
+/**
+ * System odpowiedzialny za czas w symulacji. W systemie mo¿na ustaliæ krok czasowy kolejnych iteracji.
+ * @author Szymon Konicki
+ *
+ */
 public class TimeSystem implements SymulatorSystem {
 
 	public TimeSystem(float timeDelta) {

@@ -5,11 +5,19 @@ import java.util.List;
 
 import logic.square.Square;
 import logic.square.SquareComponent;
-import login.system.CenterOfMassSystem;
-import login.system.OilPointSquareSystem;
-import login.system.SpillSystem;
-import login.system.SpreadingSystem;
+import logic.system.CenterOfMassSystem;
+import logic.system.OilPointSquareSystem;
+import logic.system.SpillSystem;
+import logic.system.SpreadingSystem;
+import logic.system.SymulatorSystem;
 
+/**
+ * 
+ *
+ * G³ówny obiekt symulacji. Jest on managerem ${@link SquareComponent}
+ * 
+ * @author Szymon Konicki
+ */
 public class Sea implements ComponentManager, SymulatorObject {
 
 	private final int x, y;
@@ -48,6 +56,12 @@ public class Sea implements ComponentManager, SymulatorObject {
 		
 	}
 	
+	
+	/**
+	 * Funkcja odpowiedzialna za uaktualnianie obiektu, wszystkich podleg³ych mu {@link SymulatorSystem} oraz dodanych {@link SquareComponent}
+	 * 
+	 * @param timeDelta przeskalowany czas jaki up³yn¹³ od poprzedniego wywo³ania pêtli
+	 */
 	public void update(float timeDelta){
 		// TODO: create some list of systems
 		spreadingSystem.update(timeDelta, this);

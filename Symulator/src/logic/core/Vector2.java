@@ -1,5 +1,12 @@
 package logic.core;
 
+/**
+ * Po³o¿enia, prêdkoœci oraz si³y dzia³aj¹ce na obiekty s¹ zapisywane jako dwuwymiarowy wektor. 
+ * Klasa udostêpnia metody wykonuj¹ce przekszta³cenia na wektorach
+ * 
+ * @author Szymon Konicki
+ *
+ */
 public final class Vector2 {
 	public float x;
 	public float y;
@@ -81,7 +88,6 @@ public final class Vector2 {
 	public final float normalize() {
 		final float magnitude = length();
 
-		// TODO: I'm choosing safety over speed here.
 		if (magnitude != 0.0f) {
 			x /= magnitude;
 			y /= magnitude;

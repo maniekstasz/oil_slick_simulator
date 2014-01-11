@@ -11,13 +11,19 @@ import logic.oilpoint.OilPointChangeSquareComponent;
 import logic.oilpoint.SpreadingComponent;
 import logic.square.NextRoundOilPointsComponent;
 import logic.square.Square;
-import login.system.CenterOfMassSystem;
-import login.system.DifferentalEquationsSpreadingSystem;
-import login.system.DiskSpreadingSystem;
-import login.system.OilPointSquareSystem;
-import login.system.SpillSystem;
-import login.system.TimeSystem;
+import logic.system.CenterOfMassSystem;
+import logic.system.DifferentalEquationsSpreadingSystem;
+import logic.system.DiskSpreadingSystem;
+import logic.system.OilPointSquareSystem;
+import logic.system.SpillSystem;
+import logic.system.TimeSystem;
 
+/**
+ * Klasa odpowiedzialna za konfiguracjê symulacji
+ * 
+ * @author Szymon Konicki
+ *
+ */
 public class Symulator {
 
 	public static void main(String args[]) {
@@ -45,6 +51,9 @@ public class Symulator {
 
 	private MainLoop mainLoop;
 
+	/**
+	 * W tej metodzie ustawiane s¹ wszystkie parametry symulacji
+	 */
 	public void configure() {
 
 		// Okreœl powierzchnie morza

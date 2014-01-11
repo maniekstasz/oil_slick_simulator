@@ -1,4 +1,4 @@
-package login.system;
+package logic.system;
 
 public interface SpreadingSystem extends SymulatorSystem {
 	public float getActualDiameter();

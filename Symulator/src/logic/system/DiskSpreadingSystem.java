@@ -1,4 +1,4 @@
-package login.system;
+package logic.system;
 
 import static java.lang.Math.*;
 import logic.core.Sea;

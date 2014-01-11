@@ -12,6 +12,12 @@ import logic.oilpoint.OilPoint;
 import logic.oilpoint.OilPointComponent;
 
 
+/**
+ * 
+ * Klasa reprezentuj¹ca obszar morza o okreœlonym rozmiarze
+ * @author Szymon Konicki
+ *
+ */
 public class Square implements ComponentManager, SymulatorObject {
 	private Vector2 position;
 

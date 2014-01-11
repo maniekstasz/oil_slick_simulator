@@ -1,4 +1,4 @@
-package login.system;
+package logic.system;
 
 import logic.core.Sea;
 import logic.core.Vector2;

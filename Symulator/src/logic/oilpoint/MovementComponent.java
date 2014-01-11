@@ -5,6 +5,12 @@ import logic.core.Vector2;
 import logic.core.PhasedComponentImpl.Phase;
 import logic.square.Square;
 
+/**
+ * Komponent odpowiedzialny za zmianê po³o¿enia {@link OilPoint} na podstawie jego prêdkoœci.
+ * 
+ * @author Szymon Konicki
+ *
+ */
 public class MovementComponent extends PhasedComponentImpl implements
 		OilPointComponent {
 

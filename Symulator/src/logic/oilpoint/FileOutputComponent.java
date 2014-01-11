@@ -12,8 +12,16 @@ import java.util.Date;
 
 import logic.core.PhasedComponentImpl;
 import logic.square.Square;
-import login.system.TimeSystem;
+import logic.system.TimeSystem;
 
+
+/**
+ * Komponent odpowiedzialny za zapisanie po³o¿enia wszystkich istniej¹cych,w danej iteracji, obiektów typu {@link OilPointComponent} do plików.
+ * Obiekt klasy tworzy folder, którego nazw¹ jest aktualny timestamp i tworzy w nim plik dla ka¿dego {@link OilPointComponent}.
+ * 
+ * @author Szymon Konicki
+ *
+ */
 public class FileOutputComponent extends PhasedComponentImpl implements
 		OilPointComponent {
 

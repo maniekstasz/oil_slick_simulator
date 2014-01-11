@@ -3,8 +3,8 @@ package logic.oilpoint;
 import logic.core.PhasedComponentImpl;
 import logic.core.Vector2;
 import logic.square.Square;
-import login.system.CenterOfMassSystem;
-import login.system.SpreadingSystem;
+import logic.system.CenterOfMassSystem;
+import logic.system.SpreadingSystem;
 
 public class SpreadingComponent extends PhasedComponentImpl implements
 		OilPointComponent {

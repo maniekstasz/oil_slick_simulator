@@ -1,15 +1,17 @@
 package logic.core;
 
-import java.util.Date;
+import logic.system.TimeSystem;
 
-import login.system.TimeSystem;
-
+/**
+ * 
+ * Gó³wna pêtla symulacji
+ * @author Szymon Konicki
+ */
 public class MainLoop implements SymulatorObject {
 
 	private final TimeSystem timeSystem;
 	private final Sea sea;
 	private boolean stop;
-	private long lastTimeUpdate;
 
 	public MainLoop(TimeSystem timeSystem, Sea sea) {
 		this.timeSystem = timeSystem;
@@ -19,15 +21,15 @@ public class MainLoop implements SymulatorObject {
 
 	@Override
 	public void reset() {
-		lastTimeUpdate = 0;
 		stop = false;
 	}
 
+	
+	/**
+	 * Metoda pobiera przeskalowany czas z {@link TimeSystem} i aktualizuje stan morza
+	 */
 	public void loop() {
-		// TODO: change for sth more precise
-
 		while (!stop) {
-
 			timeSystem.update(timeSystem.getTimeDelta(), sea);
 			sea.update(timeSystem.getTimeDelta());
 

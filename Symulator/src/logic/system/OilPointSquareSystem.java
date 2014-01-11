@@ -1,4 +1,4 @@
-package login.system;
+package logic.system;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,14 @@ import java.util.List;
 import logic.core.Sea;
 import logic.core.Vector2;
 import logic.oilpoint.OilPoint;
+import logic.square.Square;
 
+/**
+ * System odpowiedzialny za przenoszenie {@link OilPoint}s pomiêdzy {@link Square}s
+ * 
+ * @author Szymon Konicki
+ *
+ */
 public class OilPointSquareSystem implements SymulatorSystem {
 
 	public List<OilPoint>[][] getNextRoundSquares() {
@@ -26,6 +33,10 @@ public class OilPointSquareSystem implements SymulatorSystem {
 		this.squareDimension = squareDimension;
 	}
 
+	/**
+	 * Metoda dodaj¹ca {@link OilPoint} do listy, która w nastêpnej iteracji zostanie przekazana do {@link Square}
+	 * @param oilPoint cz¹stka ropy, któr¹ trzeba przenieœæ
+	 */
 	public void addOilPoint(OilPoint oilPoint) {
 		Vector2 position = oilPoint.getPosition();
 		float scaledX = position.x / squareDimension;
@@ -42,6 +53,14 @@ public class OilPointSquareSystem implements SymulatorSystem {
 		}
 	}
 
+	
+	/**
+	 * 
+	 * 
+	 * @param x wspó³rzêdna X {@link Square}
+	 * @param y wspó³rzêdna Y {@link Square}
+	 * @return Listê {@link OilPoint}s, dla {@link Square} o podanych wspó³rzêdnych
+	 */
 	public List<OilPoint> getNextRoundOilPoints(int x, int y) {
 		List<OilPoint> next = new ArrayList<OilPoint>(nextRoundSquares[x][y]);
 		nextRoundSquares[x][y].clear();

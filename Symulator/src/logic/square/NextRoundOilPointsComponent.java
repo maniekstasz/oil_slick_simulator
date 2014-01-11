@@ -7,8 +7,14 @@ import logic.core.Sea;
 import logic.core.Vector2;
 import logic.core.PhasedComponentImpl.Phase;
 import logic.oilpoint.OilPoint;
-import login.system.OilPointSquareSystem;
+import logic.oilpoint.OilPointComponent;
+import logic.system.OilPointSquareSystem;
 
+/**
+ * Komponent odpowiedzialny za uaktualnianie listy {@link OilPoint}s w okreœlonym {@link Square}
+ * @author Szymon Konicki
+ *
+ */
 public class NextRoundOilPointsComponent extends PhasedComponentImpl implements SquareComponent {
 
 	

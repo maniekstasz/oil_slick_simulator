@@ -3,8 +3,15 @@ package logic.oilpoint;
 import logic.core.PhasedComponentImpl;
 import logic.core.PhasedComponentImpl.Phase;
 import logic.square.Square;
-import login.system.OilPointSquareSystem;
+import logic.square.SquareComponent;
+import logic.system.OilPointSquareSystem;
 
+
+/**
+ * Komponent pomocny w przenoszeniu {@link OilPoint pomiêdzy {@link Square}s 
+ * @author Szymon Konicki
+ *
+ */
 public class OilPointChangeSquareComponent extends PhasedComponentImpl implements OilPointComponent{
 
 	private final OilPointSquareSystem oilPointSquareSystem;
