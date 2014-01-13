@@ -18,7 +18,8 @@ import logic.core.MainLoop;
 import logic.system.GraphicsSystem;
 
 /**
- * Class containing GUI: board + buttons
+ * Kod napisany na podstawie, kodu udostêpnionego nam na pierwszych laboratoriach przez mgr. in¿. Jakuba Porzyckiego 
+ * http://home.agh.edu.pl/~porzycki/doku.php?id=sym:lab1
  */
 public class GUI extends JPanel implements ActionListener, ChangeListener {
 	private static final long serialVersionUID = 1L;
@@ -40,10 +41,7 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 		this.board = board;
 		this.mainLoop = mainLoop;
 	}
-
-	/**
-	 * @param container to which GUI and board is added
-	 */
+	
 	public void initialize(Container container) {
 		container.setLayout(new BorderLayout());
 		container.setSize(new Dimension(1024, 768));
