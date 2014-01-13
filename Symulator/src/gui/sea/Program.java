@@ -3,6 +3,10 @@ import javax.swing.JFrame;
 
 import logic.core.Symulator;
 
+/**
+ * Kod napisany na podstawie, kodu udostêpnionego nam na pierwszych laboratoriach przez mgr. in¿. Jakuba Porzyckiego 
+ * http://home.agh.edu.pl/~porzycki/doku.php?id=sym:lab1
+ */
 public class Program extends JFrame {
 
 	private static final long serialVersionUID = 1L;
