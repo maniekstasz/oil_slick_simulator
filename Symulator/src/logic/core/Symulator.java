@@ -1,6 +1,11 @@
 package logic.core;
 
+import gui.sea.GUI;
+import gui.sea.Program;
+
 import java.io.IOException;
+
+import javax.swing.JFrame;
 
 import logic.oilpoint.FileOutputComponent;
 import logic.oilpoint.InfluenceOfCurrentComponent;
@@ -14,6 +19,7 @@ import logic.square.Square;
 import logic.system.CenterOfMassSystem;
 import logic.system.DifferentalEquationsSpreadingSystem;
 import logic.system.DiskSpreadingSystem;
+import logic.system.GraphicsSystem;
 import logic.system.OilPointSquareSystem;
 import logic.system.SpillSystem;
 import logic.system.TimeSystem;
@@ -26,47 +32,25 @@ import logic.system.TimeSystem;
  */
 public class Symulator {
 
-	public static void main(String args[]) {
-		final Symulator symulator = new Symulator();
-		symulator.configure();
-		Thread stopping = new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					System.out.println("Zatrzymaæ?");
-					System.in.read();
-					symulator.mainLoop.setStop(true);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-		});
-		stopping.start();
-		symulator.mainLoop.loop();
-
-	}
 
 	private MainLoop mainLoop;
 
 	/**
 	 * W tej metodzie ustawiane s¹ wszystkie parametry symulacji
 	 */
-	public void configure() {
+	public void configure(Program program) {
 
 		// Okreœl powierzchnie morza
-		int x = 1000, y = 1000;
+		int x = 70, y = 100;
 
 		Sea sea = new Sea(x, y);
-
+		
 		// systems
-		TimeSystem timeSystem = new TimeSystem(15 * 60);
+		TimeSystem timeSystem = new TimeSystem(15*60 );
 
 		// Ostatni parametr to rozmiar kwadratu w metrach
 		OilPointSquareSystem oilPointSquareSystem = new OilPointSquareSystem(x,
-				y, 100);
+				y, 1000);
 		// DifferentalEquationsSpreadingSystem
 		// differentalEquationsSpreadingSystem = new
 		// DifferentalEquationsSpreadingSystem(timeSystem);
@@ -78,8 +62,10 @@ public class Symulator {
 				centerOfMassSystem, timeSystem);
 		differentalEquationsSpreadingSystem.setupStartValues(0, 1000, 0, 300, 1);
 
-		SpillSystem spillSystem = new SpillSystem(oilPointSquareSystem);
 
+		SpillSystem spillSystem = new SpillSystem(oilPointSquareSystem);
+		
+	
 		// przemyœleæ dodawanie systemów
 		mainLoop = new MainLoop(timeSystem, sea);
 		sea.setCenterOfMassSystem(centerOfMassSystem);
@@ -103,7 +89,7 @@ public class Symulator {
 		SpreadingComponent spreadingComponent = new SpreadingComponent(
 				differentalEquationsSpreadingSystem, centerOfMassSystem);
 
-		spillSystem.addOilSpill(50000, 50000, 2, 10000000, 20f);
+		spillSystem.addOilSpill(50000, 35000, 1000, 10, 20f);
 
 		Square[][] squares = sea.getSquares();
 		// do przemyœlenia czy dodawaæ do ka¿dego squara
@@ -115,11 +101,16 @@ public class Symulator {
 				// squares[i][j].addComponent(influenceOfCurrentComponent);
 				// squares[i][j].addComponent(influenceOfWindComponent);
 				squares[i][j].addComponent(influenceOfDiffusionComponent);
-				squares[i][j].addComponent(fileOutputComponent);
+//				squares[i][j].addComponent(fileOutputComponent);
 				squares[i][j].addComponent(spreadingComponent);
 			}
 		}
-
+		GraphicsSystem graphicsSystem = new GraphicsSystem();
+		sea.setGraphicsSystem(graphicsSystem);
+		graphicsSystem.setSquares(squares);
+		GUI gui = new GUI(program, graphicsSystem, mainLoop);
+		gui.initialize(program.getContentPane());
+	
 		// zdefiniuj w którym kwadracie ma pojawiaæ siê ropa i ile oilpunktów ma
 		// siê pojawiaæ na sekunde
 
@@ -131,4 +122,5 @@ public class Symulator {
 		// oilPoints.add(new OilPoint(new Vector2(0.5f, 0.5f)));
 		// oilPointSquareSystem.addOilPoint(op);
 	}
+	
 }

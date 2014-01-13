@@ -16,12 +16,13 @@ public class MainLoop implements SymulatorObject {
 	public MainLoop(TimeSystem timeSystem, Sea sea) {
 		this.timeSystem = timeSystem;
 		this.sea = sea;
-		reset();
 	}
 
 	@Override
 	public void reset() {
-		stop = false;
+//		stop = false;
+		timeSystem.reset();
+		sea.reset();
 	}
 
 	
@@ -29,11 +30,11 @@ public class MainLoop implements SymulatorObject {
 	 * Metoda pobiera przeskalowany czas z {@link TimeSystem} i aktualizuje stan morza
 	 */
 	public void loop() {
-		while (!stop) {
+//		while (!stop) {
 			timeSystem.update(timeSystem.getTimeDelta(), sea);
 			sea.update(timeSystem.getTimeDelta());
 
-		}
+//		}
 	}
 
 	public boolean isStop() {

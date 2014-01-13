@@ -46,7 +46,6 @@ public class CenterOfMassSystem implements SymulatorSystem {
 		x=x/amount;
 		y=y/amount;
 		centerOfMass=new Vector2(x,y);
-		System.out.println("center: "+centerOfMass.x+" "+centerOfMass.y);
 		
 		
 		Square square=sea.getSquares()[(int)(x/squareDimension)][(int)(y/squareDimension)];   // square with center of mass

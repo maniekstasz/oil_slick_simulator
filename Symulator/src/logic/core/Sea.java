@@ -6,6 +6,7 @@ import java.util.List;
 import logic.square.Square;
 import logic.square.SquareComponent;
 import logic.system.CenterOfMassSystem;
+import logic.system.GraphicsSystem;
 import logic.system.OilPointSquareSystem;
 import logic.system.SpillSystem;
 import logic.system.SpreadingSystem;
@@ -28,6 +29,7 @@ public class Sea implements ComponentManager, SymulatorObject {
 	private OilPointSquareSystem oilPointSquareSystem;
 	private SpillSystem spillSystem;
 	private CenterOfMassSystem centerOfMassSystem;
+	private GraphicsSystem graphicsSystem;
 	public CenterOfMassSystem getCenterOfMassSystem() {
 		return centerOfMassSystem;
 	}
@@ -53,6 +55,19 @@ public class Sea implements ComponentManager, SymulatorObject {
 	
 	@Override
 	public void reset() {
+		spreadingSystem.reset();
+		spillSystem.reset();
+		centerOfMassSystem.reset();
+		for(int x = 0; x < squares.length; x++){
+			for(int y = 0; y < squares[x].length; y++){
+				for(SquareComponent sc : squareComponents){
+					sc.reset();
+				}
+				squares[x][y].reset();
+			}
+		}
+		graphicsSystem.reset();
+		oilPointSquareSystem.reset();
 		
 	}
 	
@@ -75,6 +90,7 @@ public class Sea implements ComponentManager, SymulatorObject {
 				squares[x][y].update(this, timeDelta);
 			}
 		}
+		graphicsSystem.update(timeDelta, this);
 		oilPointSquareSystem.update(timeDelta, this);
 	}
 
@@ -117,6 +133,10 @@ public class Sea implements ComponentManager, SymulatorObject {
 	public void setCenterOfMassSystem(CenterOfMassSystem centerOfMassSystem) {
 		this.centerOfMassSystem=centerOfMassSystem;
 		
+	}
+
+	public void setGraphicsSystem(GraphicsSystem graphicsSystem) {
+		this.graphicsSystem = graphicsSystem;
 	}
 
 

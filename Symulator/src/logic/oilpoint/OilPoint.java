@@ -1,5 +1,6 @@
 package logic.oilpoint;
 
+import logic.core.SymulatorObject;
 import logic.core.Vector2;
 import logic.square.Square;
 
@@ -9,7 +10,7 @@ import logic.square.Square;
  * @author Szymon Konicki
  *
  */
-public class OilPoint {
+public class OilPoint implements SymulatorObject {
 	
 	private Vector2 position;
 	private Vector2 velocity = new Vector2(0.0f, 0.0f);
@@ -47,5 +48,14 @@ public class OilPoint {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	
 }

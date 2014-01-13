@@ -58,7 +58,11 @@ public class Square implements ComponentManager, SymulatorObject {
 
 	@Override
 	public void reset() {
-
+		oilPoints.clear();
+		nextRoundOilPoints = null;
+		for (OilPointComponent oc : oilPointComponents) {
+			oc.reset();
+		}
 	}
 
 	public void update(Sea sea, float timeDelta) {
@@ -107,6 +111,10 @@ public class Square implements ComponentManager, SymulatorObject {
 
 	public void setCurrent(Vector2 current) {
 		this.current = current;
+	}
+	
+	public int getMass(){
+		return oilPoints.size();
 	}
 
 }

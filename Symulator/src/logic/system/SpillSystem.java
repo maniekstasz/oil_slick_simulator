@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import logic.core.Sea;
+import logic.core.SymulatorObject;
 import logic.core.Vector2;
 import logic.oilpoint.OilPoint;
 
@@ -28,8 +29,9 @@ public class SpillSystem implements SymulatorSystem {
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-
+		for(OilSpill oilSpill: oilSpills){
+			oilSpill.reset();
+		}
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class SpillSystem implements SymulatorSystem {
 		}
 	}
 
-	public class OilSpill {
+	public class OilSpill implements SymulatorObject {
 		private final float x, y;
 		private float spillAmount; // oil pieces per second
 		private int number = 0;
@@ -69,8 +71,7 @@ public class SpillSystem implements SymulatorSystem {
 		public List<OilPoint> update(float timeDelta) {
 			List<OilPoint> oilPoints = new ArrayList<OilPoint>(0);
 			if (actualNumber < number) {
-				lastSpill += timeDelta;
-				int oilPiecesAmount = (int) (lastSpill * spillAmount);
+				int oilPiecesAmount = (int)  spillAmount;
 				int capacity = 0;
 				if (actualNumber+oilPiecesAmount < number) {
 					capacity = oilPiecesAmount;
@@ -97,6 +98,12 @@ public class SpillSystem implements SymulatorSystem {
 			return oilPoints;
 		}
 
+		@Override
+		public void reset() {
+			actualNumber = 0;
+		}
+
 	}
+
 
 }

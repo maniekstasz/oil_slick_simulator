@@ -9,10 +9,11 @@ import logic.oilpoint.OilPoint;
 import logic.square.Square;
 
 /**
- * System odpowiedzialny za przenoszenie {@link OilPoint}s pomiêdzy {@link Square}s
+ * System odpowiedzialny za przenoszenie {@link OilPoint}s pomiêdzy
+ * {@link Square}s
  * 
  * @author Szymon Konicki
- *
+ * 
  */
 public class OilPointSquareSystem implements SymulatorSystem {
 
@@ -27,15 +28,18 @@ public class OilPointSquareSystem implements SymulatorSystem {
 		nextRoundSquares = new ArrayList[x][y];
 		for (int i = 0; i < nextRoundSquares.length; i++) {
 			for (int j = 0; j < nextRoundSquares[i].length; j++) {
-				nextRoundSquares[i][j] = new ArrayList<OilPoint>();
+				nextRoundSquares[i][j] = new ArrayList<OilPoint>(0);
 			}
 		}
 		this.squareDimension = squareDimension;
 	}
 
 	/**
-	 * Metoda dodaj¹ca {@link OilPoint} do listy, która w nastêpnej iteracji zostanie przekazana do {@link Square}
-	 * @param oilPoint cz¹stka ropy, któr¹ trzeba przenieœæ
+	 * Metoda dodaj¹ca {@link OilPoint} do listy, która w nastêpnej iteracji
+	 * zostanie przekazana do {@link Square}
+	 * 
+	 * @param oilPoint
+	 *            cz¹stka ropy, któr¹ trzeba przenieœæ
 	 */
 	public void addOilPoint(OilPoint oilPoint) {
 		Vector2 position = oilPoint.getPosition();
@@ -43,23 +47,27 @@ public class OilPointSquareSystem implements SymulatorSystem {
 		float scaledY = position.y / squareDimension;
 		int posX = (int) scaledX;
 		int posY = (int) scaledY;
-		
-		nextRoundSquares[posX][posY].add(oilPoint);
+		if (posX >= 0 && posX < nextRoundSquares.length) {
+			if (posY >= 0 && posY < nextRoundSquares[posX].length)
+			nextRoundSquares[posX][posY].add(oilPoint);
+		}
 	}
-	
+
 	public void addAll(List<OilPoint> oilPoints) {
-		for(OilPoint op: oilPoints){
+		for (OilPoint op : oilPoints) {
 			addOilPoint(op);
 		}
 	}
 
-	
 	/**
 	 * 
 	 * 
-	 * @param x wspó³rzêdna X {@link Square}
-	 * @param y wspó³rzêdna Y {@link Square}
-	 * @return Listê {@link OilPoint}s, dla {@link Square} o podanych wspó³rzêdnych
+	 * @param x
+	 *            wspó³rzêdna X {@link Square}
+	 * @param y
+	 *            wspó³rzêdna Y {@link Square}
+	 * @return Listê {@link OilPoint}s, dla {@link Square} o podanych
+	 *         wspó³rzêdnych
 	 */
 	public List<OilPoint> getNextRoundOilPoints(int x, int y) {
 		List<OilPoint> next = new ArrayList<OilPoint>(nextRoundSquares[x][y]);
@@ -78,11 +86,11 @@ public class OilPointSquareSystem implements SymulatorSystem {
 
 	@Override
 	public void update(float timeDelta, Sea sea) {
-//		for (int x = 0; x < nextRoundSquares.length; x++) {
-//			for (int y = 0; y < nextRoundSquares[x].length; y++) {
-//				nextRoundSquares[x][y].clear();
-//			}
-//		}
+		// for (int x = 0; x < nextRoundSquares.length; x++) {
+		// for (int y = 0; y < nextRoundSquares[x].length; y++) {
+		// nextRoundSquares[x][y].clear();
+		// }
+		// }
 
 	}
 
