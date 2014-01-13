@@ -24,9 +24,20 @@ public class DiskSpreadingSystem implements SpreadingSystem {
 		densityOfWater = 1050; // [kg/m^3]
 		densityOfOil = 800; // [kg/m^3]
 		startVolume = 1000; // [m^3]
-		constant = 20f;// stochastic.pdf (18)  //1.7 
+		constant = 1.7f;// stochastic.pdf (18)  //1.7 
 		//startDiameter = (float) (2*112*Math.sqrt(startVolume));  //(30, stochastic.pdf
 		startDiameter=20;
+	}
+	
+	public DiskSpreadingSystem(TimeSystem timeSystem,float densityOfWater, float densityOfOil,float startVolume, float startDiameter) {
+		this.timeSystem = timeSystem;
+		/* default value */
+		this.densityOfWater = densityOfWater; // [kg/m^3]
+		this.densityOfOil = densityOfOil; // [kg/m^3]
+		this.startVolume = startVolume; // [m^3]
+		constant = 20f;// stochastic.pdf (18)  //1.7 
+		//startDiameter = (float) (2*112*Math.sqrt(startVolume));  //(30, stochastic.pdf
+		this.startDiameter=startDiameter;
 	}
 
 	public void setStartDiameter(float startDiameter) {

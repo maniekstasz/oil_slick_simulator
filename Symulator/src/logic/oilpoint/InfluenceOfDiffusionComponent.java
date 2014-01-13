@@ -24,11 +24,11 @@ public class InfluenceOfDiffusionComponent extends PhasedComponentImpl implement
 		super(Phase.PHISICS.ordinal());
 	}
 
-	public InfluenceOfDiffusionComponent(float nonDefaultDiffusionCoefficent) {
+	public InfluenceOfDiffusionComponent(float diffusionCoefficent) {
 
 		super(Phase.PHISICS.ordinal());
 
-		diffusionCoefficent = nonDefaultDiffusionCoefficent;
+		this.diffusionCoefficent = diffusionCoefficent;
 	}
 
 	@Override
