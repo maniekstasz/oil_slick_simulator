@@ -224,7 +224,7 @@ public class Symulator {
 
 	private HashMap<Par, Float> createMapOfParameters(Program program,
 			File inputfile) {
-		HashMap<Par, Float> map = new HashMap<>();
+		HashMap<Par, Float> map = new HashMap<Par, Float>();
 		int counter = 0;
 		try {
 			BufferedReader reader = new BufferedReader(
