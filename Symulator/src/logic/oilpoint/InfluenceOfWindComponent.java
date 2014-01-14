@@ -15,9 +15,9 @@ public class InfluenceOfWindComponent extends PhasedComponentImpl implements
 
 	}
 
-	public InfluenceOfWindComponent(float nonDefaultalphaW) {
+	public InfluenceOfWindComponent(float windParameter) {
 		super(Phase.PHISICS.ordinal());
-		windParameter = nonDefaultalphaW;
+		this.windParameter = windParameter;
 
 	}
 
