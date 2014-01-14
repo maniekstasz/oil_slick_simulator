@@ -31,15 +31,17 @@ public class SpreadingComponent extends PhasedComponentImpl implements
 		Vector2 relativePosition = new Vector2(xPos, yPos);
 
 		float r = relativePosition.getR();
-
+		
 		float theta = relativePosition.getTheta();
 
 		float rn = diameter / previousDiameter * r;
-
+       
 		Vector2 velocity = Vector2.createFromPolar(rn-r, theta);
 
 		velocity.divide(timeDelta);
+		
 		oilPoint.getVelocity().add(velocity);
+	
 	}
 
 	@Override

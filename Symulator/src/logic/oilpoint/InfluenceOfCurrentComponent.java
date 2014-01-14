@@ -7,23 +7,21 @@ import logic.square.Square;
 
 public class InfluenceOfCurrentComponent extends PhasedComponentImpl implements
 		OilPointComponent {
-	private float alphaC = 1.1f; // default value
+	private float currentParameter;
 
-	public InfluenceOfCurrentComponent() {
-		super(Phase.PHISICS.ordinal());
-	}
 
-	public InfluenceOfCurrentComponent(float nonDefaultalphaC) {
+
+	public InfluenceOfCurrentComponent(float currentParameter) {
 		super(Phase.PHISICS.ordinal());
-		alphaC = nonDefaultalphaC;
+		this.currentParameter = currentParameter;
 	}
 
 	@Override
 	public void update(Square square, float timeDelta, OilPoint oilPoint) {
 		Vector2 velocityOfCurrent = square.getCurrent();
 		if (velocityOfCurrent != null) {
-			oilPoint.getVelocity().add(alphaC * velocityOfCurrent.x,
-					alphaC * velocityOfCurrent.y);
+			oilPoint.getVelocity().add(currentParameter * velocityOfCurrent.x,
+					currentParameter * velocityOfCurrent.y);
 		}
 	}
 

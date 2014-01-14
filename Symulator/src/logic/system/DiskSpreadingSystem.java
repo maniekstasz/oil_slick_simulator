@@ -81,6 +81,7 @@ public class DiskSpreadingSystem implements SpreadingSystem {
 		if(previousDiameter==0.0f){
 			previousDiameter=actualDiameter;
 		}
+		System.out.println("diameter "+actualDiameter);
 
 	}
 

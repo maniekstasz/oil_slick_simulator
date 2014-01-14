@@ -50,8 +50,11 @@ public class Square implements ComponentManager, SymulatorObject {
 		oilPointComponents = new ArrayList<OilPointComponent>(componentsSize);
 		oilPoints = new ArrayList<OilPoint>();
 	}
-	public Square(Vector2 position) {
+	public Square(Vector2 position,Vector2 current,Vector2 wind,float temperature) {
 		this.position = position;
+		this.current=current;
+		this.wind=wind;
+		this.temperature=temperature;
 		oilPointComponents = new ArrayList<OilPointComponent>();
 		oilPoints = new ArrayList<OilPoint>();
 	}

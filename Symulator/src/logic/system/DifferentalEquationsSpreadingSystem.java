@@ -10,9 +10,12 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 
 	private final CenterOfMassSystem centerOfMassSystem;
 
-	private float T; // wartosci w kazdej iteracji brane z kwadratu
+	private float T; // wartosci w kazdej iteracji brane z kwadratu //
 						// zawierajacego srodek ciezkosci
 	private float W;
+	private float D = 0;
+	private float prevoiusVolume;
+
 	/****************************************************/
 	/* PARAMETRY */
 	private float K = 1;// ?
@@ -20,17 +23,16 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 	private float ANonArea = 1;
 	private float T0 = 301;
 	private float Tg = 500;
-	private float D;
 	private float C3 = 0.7f;
-	private float K1 = 0.001f; // ?
+	private float K1 = 1f; // ?
 	private float C4 = 10;
-	private float roW = 1.020f; // gestoœæ wody
-	private float roC = 0.832f; // orginalna gêstoœæ oleju
+	private float densityOfWater = 1.020f; // gestoœæ wody
+	private float densityOfOil = 0.832f; // orginalna gêstoœæ oleju
 	private float st = 1; // wspolczynnik napiecia powierzchniowego
+	private float rk4TimeStep = 0.1f;
 
 	/************************************************************/
 
-	private float rk4TimeStep = 0.1f;
 	private RK4 rK4;
 
 	// * wartosci liczone RK4*//
@@ -53,14 +55,7 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 
 		this.centerOfMassSystem = centerOfMassSystem;
 		this.timeSystem = timeSystem;
-		Vector2 vectorOfWind = centerOfMassSystem.getWind();
-		if (vectorOfWind != null) {
-			this.W = vectorOfWind.length();
-		} else {
-			this.W = 0;
-		}
-		this.T = centerOfMassSystem.getTemperature();
-		rK4 = new RK4(new Function());
+		this.rK4 = new RK4(new Function());
 	}
 
 	public void setupStartValues(float Fe0, float V0, float Y0, float A0,
@@ -78,6 +73,25 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 
 	}
 
+	public void setupParameters(float K, float B, float ANonArea, float T0,
+			float Tg, float C3, float K1, float C4, float densityOfWater,
+			float densityOfOil, float st, float rk4TimeStep) {
+
+		this.K = K;
+		this.B = B;
+		this.ANonArea = ANonArea;
+		this.T0 = T0;
+		this.Tg = Tg;
+		this.C3 = C3;
+		this.K1 = K1; // ?
+		this.C4 = C4;
+		this.densityOfWater = densityOfWater / 1000; // gestoœæ wody [tu w
+														// g/cm^3]
+		this.densityOfOil = densityOfOil / 1000; // orginalna gêstoœæ oleju
+		this.st = st; // wspolczynnik napiecia powierzchniowego
+		this.rk4TimeStep = rk4TimeStep;
+	}
+
 	class Function {
 
 		private double dFe_dt(double t, double Fe) {
@@ -92,8 +106,8 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 		private double dV_dt(double t, double dFe_dt, double V) {
 			double V0 = startValues[V_VOLUME];
 
-			double result =-V0 * dFe_dt-D / 3600 * V;
-		
+			double result = -V0 * dFe_dt - D / 3600 * V;
+
 			return result;
 		}
 
@@ -105,7 +119,7 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 
 		private double dA_dt(double t, double A, double V) {
 			double result = K1 / A * Math.pow(V, 4. / 3);
-			
+
 			return result;
 		}
 
@@ -151,7 +165,7 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 
 		void solve(float tStart, float tEnd, float delta) {
 			float actualTime = tStart;
-			while(actualTime < tEnd) {
+			while (actualTime < tEnd) {
 				float thicknes = (float) (values[V_VOLUME] / values[A_AREA]);
 				D = (float) (0.11 * (1 + W) * (1 + W) * 1.0 / (1 + 50
 						* Math.pow(values[MI_VISCOSITY], 0.5) * thicknes * st));
@@ -165,10 +179,10 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 				k = multiple(1. / 6, add(k1, k2, k2, k3, k3, k4)); // trzeba
 																	// pomnioazyc
 				values = add(values, multiple(delta, k));
-				
-//				 values =
-//				 add(values,multiple(delta,function.evaluate(actualTime,
-//				 values)));// EULER
+
+				// values =
+				// add(values,multiple(delta,function.evaluate(actualTime,
+				// values)));// EULER
 				actualTime += delta;
 			}
 
@@ -197,7 +211,9 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 
 	@Override
 	public void update(float timeDelta, Sea sea) {
-		previousDiameter = (float) Math.sqrt(values[A_AREA] * 4 / Math.PI);
+		this.previousDiameter = (float) Math.sqrt(values[A_AREA] * 4 / Math.PI);
+		this.prevoiusVolume = (float) values[V_VOLUME];
+
 		Vector2 vectorOfWind = centerOfMassSystem.getWind();
 		if (vectorOfWind != null) {
 			this.W = vectorOfWind.length();
@@ -208,12 +224,15 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 		T = centerOfMassSystem.getTemperature();
 		float totalTime = timeSystem.getTotalTime();
 		float deltaTime = timeSystem.getTimeDelta();
-		float density = (float) (values[Fe_EVAPRATION] * roW + (1 - values[Y_CONT_WATER])
-				* (roC + C3 * values[0]));
-		
+		float density = (float) (values[Fe_EVAPRATION] * densityOfWater + (1 - values[Y_CONT_WATER])
+				* (densityOfOil + C3 * values[Fe_EVAPRATION]));// ??
 
 		rK4.solve(totalTime, totalTime + deltaTime, rk4TimeStep);
 		diameter = (float) Math.sqrt(values[A_AREA] * 4 / Math.PI);
+//		System.out.println("D " + D);
+//		System.out.println("Fe " + values[0] + "   V " + values[1] + "  Y "
+//				+ values[2] + " " + values[3] + "   mi " + values[4]);
+
 	}
 
 	@Override
@@ -230,6 +249,10 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 	@Override
 	public float getPreviousDiameter() {
 		return previousDiameter;
+	}
+
+	public float getRatioOfVolume() {
+		return (float) (values[V_VOLUME] / prevoiusVolume);
 	}
 
 }

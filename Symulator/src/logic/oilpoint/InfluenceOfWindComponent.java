@@ -8,7 +8,7 @@ import logic.square.Square;
 public class InfluenceOfWindComponent extends PhasedComponentImpl implements
 		OilPointComponent {
 
-	private float alphaW = 0.03f; // default value
+	private float windParameter = 0.03f; // default value
 
 	public InfluenceOfWindComponent() {
 		super(Phase.PHISICS.ordinal());
@@ -17,7 +17,7 @@ public class InfluenceOfWindComponent extends PhasedComponentImpl implements
 
 	public InfluenceOfWindComponent(float nonDefaultalphaW) {
 		super(Phase.PHISICS.ordinal());
-		alphaW = nonDefaultalphaW;
+		windParameter = nonDefaultalphaW;
 
 	}
 
@@ -35,11 +35,11 @@ public class InfluenceOfWindComponent extends PhasedComponentImpl implements
 			TranformationMatrixD tranformationMatrixD = new TranformationMatrixD(
 					theta);
 
-			float xValue = alphaW
+			float xValue = windParameter
 					* (velocityOfWind.x * tranformationMatrixD.matrix[0][0] + velocityOfWind.y
 							* tranformationMatrixD.matrix[0][1]);
 
-			float yValue = alphaW
+			float yValue = windParameter
 					* (velocityOfWind.x * tranformationMatrixD.matrix[1][0] + velocityOfWind.y
 							* tranformationMatrixD.matrix[1][1]);
 

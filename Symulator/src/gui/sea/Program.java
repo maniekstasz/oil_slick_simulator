@@ -15,6 +15,7 @@ import logic.core.Symulator;
 public class Program extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private GUI gof;
 
 	public Program() {
 		setTitle("Symulacja");

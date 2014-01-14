@@ -85,9 +85,12 @@ public class SpillSystem implements SymulatorSystem {
 				actualNumber+=capacity;
 				for (int i = 0; i < capacity; i++) {
 					float theta=(float) (random.nextFloat()*2*Math.PI);
-					float r=diameter/2*random.nextFloat();
+					float r=(diameter)/2*random.nextFloat();
+					
 					float x = (float) (this.x+r*Math.sin(theta));
 					float y = (float) (this.y+r*Math.cos(theta));
+				
+					
 					oilPoints.add(new OilPoint(new Vector2(x, y),autoIncrementId++));
 				}
 				if (oilPiecesAmount > 0) {
