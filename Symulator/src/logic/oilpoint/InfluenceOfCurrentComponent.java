@@ -2,29 +2,25 @@ package logic.oilpoint;
 
 import logic.core.PhasedComponentImpl;
 import logic.core.Vector2;
-import logic.core.PhasedComponentImpl.Phase;
 import logic.square.Square;
 
 public class InfluenceOfCurrentComponent extends PhasedComponentImpl implements
 		OilPointComponent {
-//	private float currentParameter;
+	private float currentParameter=1.1f;
 
 
 
-//	public InfluenceOfCurrentComponent(float currentParameter) {
-//		super(Phase.PHISICS.ordinal());
-//		this.currentParameter = currentParameter;
-//	}
-	public InfluenceOfCurrentComponent() {
+	public InfluenceOfCurrentComponent(float currentParameter) {
 		super(Phase.PHISICS.ordinal());
+		this.currentParameter = currentParameter;
 	}
 
 	@Override
 	public void update(Square square, float timeDelta, OilPoint oilPoint) {
 		Vector2 velocityOfCurrent = square.getCurrent();
 		if (velocityOfCurrent != null) {
-			oilPoint.getVelocity().add(square.getCurrent().x * velocityOfCurrent.x,
-					square.getCurrent().y * velocityOfCurrent.y);
+			oilPoint.getVelocity().add(currentParameter * velocityOfCurrent.x,
+					currentParameter * velocityOfCurrent.y);
 		}
 	}
 

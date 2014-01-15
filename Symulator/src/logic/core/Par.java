@@ -30,10 +30,12 @@ enum Par {
 	C4(10.0f),
    /***************************************/
 	/*stale do pr¹du i aiatru*/
-	currentParameterX(0.11f),
-	currentParameterY(0.11f),
-	windParameterX(-0.1f),
-	windParameterY(0.1f),
+	currentX(0f),
+	currentY(0f),
+	windX(0f),
+	windY(0f),
+	currentParameter(1.1f),
+	windParameter(0.03f),
 	
 	
 	// grafika

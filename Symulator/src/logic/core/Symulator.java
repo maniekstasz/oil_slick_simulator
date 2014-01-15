@@ -97,19 +97,26 @@ public class Symulator {
 				.get(Par.K1));
 		float C4 = (map.get(Par.C4) == null ? Par.C4.defaultValue : map
 				.get(Par.C4));
-		float currentParameterX = (map.get(Par.currentParameterX) == null ? Par.currentParameterX.defaultValue
-				: map.get(Par.currentParameterX));
-		float currentParameterY = (map.get(Par.currentParameterY) == null ? Par.currentParameterX.defaultValue
-				: map.get(Par.currentParameterY));
-		float windParameterX = (map.get(Par.windParameterX) == null ? Par.windParameterX.defaultValue
-				: map.get(Par.currentParameterX));
-		float windParameterY= (map.get(Par.windParameterY) == null ? Par.windParameterY.defaultValue
-				: map.get(Par.windParameterY));
+		float currentX = (map.get(Par.currentX) == null ? Par.currentX.defaultValue
+				: map.get(Par.currentX));
+		float currentY = (map.get(Par.currentY) == null ? Par.currentX.defaultValue
+				: map.get(Par.currentY));
+		float windX = (map.get(Par.windX) == null ? Par.windX.defaultValue
+				: map.get(Par.currentX));
+		float windY= (map.get(Par.windY) == null ? Par.windY.defaultValue
+				: map.get(Par.windY));
+		float currentParameter= (map.get(Par.currentParameter) == null ? Par.currentParameter.defaultValue
+				: map.get(Par.currentParameter));
+		float windParameter= (map.get(Par.windParameter) == null ? Par.windParameter.defaultValue
+				: map.get(Par.windParameter));
+		
+		
+		
 		float graphicsSquareSize = (map.get(Par.graphicsSquareSize) == null ? Par.graphicsSquareSize.defaultValue
 				: map.get(Par.graphicsSquareSize));
 		float graphicsMaxMass = (map.get(Par.graphicsMaxMass) == null ? Par.graphicsMaxMass.defaultValue
 				: map.get(Par.graphicsMaxMass));
-		Sea sea = new Sea(x, y, new Vector2(currentParameterX, currentParameterY),new Vector2(windParameterX, windParameterY));
+		Sea sea = new Sea(x, y, new Vector2(currentX, currentY),new Vector2(windX, windY));
 
 		TimeSystem timeSystem = new TimeSystem(timeDelta);
 
@@ -146,10 +153,10 @@ public class Symulator {
 		// oilPoint components
 		RemoveComponent removeComponent = new RemoveComponent(
 				differentalEquationsSpreadingSystem);
-		InfluenceOfCurrentComponent influenceOfCurrentComponent = new InfluenceOfCurrentComponent();
+		InfluenceOfCurrentComponent influenceOfCurrentComponent = new InfluenceOfCurrentComponent(currentParameter);
 		InfluenceOfDiffusionComponent influenceOfDiffusionComponent = new InfluenceOfDiffusionComponent(
 				diffusionCoefficent);
-		InfluenceOfWindComponent influenceOfWindComponent = new InfluenceOfWindComponent();
+		InfluenceOfWindComponent influenceOfWindComponent = new InfluenceOfWindComponent(windParameter);
 		MovementComponent movementComponent = new MovementComponent();
 		OilPointChangeSquareComponent oilPointChangeSquareComponent = new OilPointChangeSquareComponent(
 				oilPointSquareSystem);
