@@ -30,7 +30,8 @@ public class OilPointChangeSquareComponent extends PhasedComponentImpl implement
 
 	@Override
 	public void update(Square square, float timeDelta, OilPoint oilPoint) {
-		oilPointSquareSystem.addOilPoint(oilPoint);
+		if(!oilPoint.isRemove())
+			oilPointSquareSystem.addOilPoint(oilPoint);
 	}
 
 }

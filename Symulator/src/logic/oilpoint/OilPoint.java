@@ -15,6 +15,7 @@ public class OilPoint implements SymulatorObject {
 	private Vector2 position;
 	private Vector2 velocity = new Vector2(0.0f, 0.0f);
 	private Long id;
+	private boolean remove = false;
 	// Dalsze pola które bêd¹ modifikowane przez obiekty typu OilPointComponent
 	
 	
@@ -54,6 +55,16 @@ public class OilPoint implements SymulatorObject {
 	public void reset() {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	public boolean isRemove() {
+		return remove;
+	}
+
+
+	public void setRemove(boolean remove) {
+		this.remove = remove;
 	}
 
 

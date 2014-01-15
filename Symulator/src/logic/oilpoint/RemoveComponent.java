@@ -33,7 +33,8 @@ public class RemoveComponent extends PhasedComponentImpl implements
 		float removeProbability = 1 - ratioOfVolume;
 		float r = random.nextFloat();
 		if (r < removeProbability) {
-			oilPoint = null; // trzeba zupelnie usunac ten oilPoint
+			System.out.println("removed");
+			oilPoint.setRemove(true); // trzeba zupelnie usunac ten oilPoint
 		}
 	}
 
