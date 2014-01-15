@@ -34,14 +34,14 @@ public class Sea implements ComponentManager, SymulatorObject {
 		return centerOfMassSystem;
 	}
 
-	public Sea(int x, int y){
+	public Sea(int x, int y, Vector2 current, Vector2 wind){
 		
 		this.x = x;
 		this.y = y;
 		squares = new Square[x][y];
 		for(x = 0; x < squares.length; x++){
 			for(y = 0; y < squares[x].length; y++){
-				squares[x][y] = new Square(new Vector2(x,y), new Vector2(0.01f,0.01f),null,273);
+				squares[x][y] = new Square(new Vector2(x,y), current,wind,273);
 			}
 		}
 		squareComponents = new ArrayList<SquareComponent>();

@@ -46,7 +46,7 @@ public class Symulator {
 		configure(program, null);
 	}
 
-	@SuppressWarnings("unused")
+//	@SuppressWarnings("unused")
 	public void configure(Program program, File inputFile) {
 
 		HashMap<Par, Float> map = createMapOfParameters(program, inputFile);
@@ -97,10 +97,19 @@ public class Symulator {
 				.get(Par.K1));
 		float C4 = (map.get(Par.C4) == null ? Par.C4.defaultValue : map
 				.get(Par.C4));
-		float currentParameter = (map.get(Par.currentParameter) == null ? Par.currentParameter.defaultValue
-				: map.get(Par.currentParameter));
-
-		Sea sea = new Sea(x, y);
+		float currentParameterX = (map.get(Par.currentParameterX) == null ? Par.currentParameterX.defaultValue
+				: map.get(Par.currentParameterX));
+		float currentParameterY = (map.get(Par.currentParameterY) == null ? Par.currentParameterX.defaultValue
+				: map.get(Par.currentParameterY));
+		float windParameterX = (map.get(Par.windParameterX) == null ? Par.windParameterX.defaultValue
+				: map.get(Par.currentParameterX));
+		float windParameterY= (map.get(Par.windParameterY) == null ? Par.windParameterY.defaultValue
+				: map.get(Par.windParameterY));
+		float graphicsSquareSize = (map.get(Par.graphicsSquareSize) == null ? Par.graphicsSquareSize.defaultValue
+				: map.get(Par.graphicsSquareSize));
+		float graphicsMaxMass = (map.get(Par.graphicsMaxMass) == null ? Par.graphicsMaxMass.defaultValue
+				: map.get(Par.graphicsMaxMass));
+		Sea sea = new Sea(x, y, new Vector2(currentParameterX, currentParameterY),new Vector2(windParameterX, windParameterY));
 
 		TimeSystem timeSystem = new TimeSystem(timeDelta);
 
@@ -137,16 +146,15 @@ public class Symulator {
 		// oilPoint components
 		RemoveComponent removeComponent = new RemoveComponent(
 				differentalEquationsSpreadingSystem);
-		InfluenceOfCurrentComponent influenceOfCurrentComponent = new InfluenceOfCurrentComponent(
-				currentParameter);
+		InfluenceOfCurrentComponent influenceOfCurrentComponent = new InfluenceOfCurrentComponent();
 		InfluenceOfDiffusionComponent influenceOfDiffusionComponent = new InfluenceOfDiffusionComponent(
 				diffusionCoefficent);
 		InfluenceOfWindComponent influenceOfWindComponent = new InfluenceOfWindComponent();
 		MovementComponent movementComponent = new MovementComponent();
 		OilPointChangeSquareComponent oilPointChangeSquareComponent = new OilPointChangeSquareComponent(
 				oilPointSquareSystem);
-		FileOutputComponent fileOutputComponent = new FileOutputComponent(
-				timeSystem);
+//		FileOutputComponent fileOutputComponent = new FileOutputComponent(
+//				timeSystem);
 
 		// SpreadingComponent spreadingComponent = new SpreadingComponent(
 		// differentalEquationsSpreadingSystem, centerOfMassSystem);
@@ -163,17 +171,20 @@ public class Symulator {
 			for (int j = 0; j < y; j++) {
 				squares[i][j].addComponent(movementComponent);
 				squares[i][j].addComponent(oilPointChangeSquareComponent);
-				// squares[i][j].addComponent(influenceOfCurrentComponent);
-				// squares[i][j].addComponent(influenceOfWindComponent);
-				// squares[i][j].addComponent(influenceOfDiffusionComponent);
+				 squares[i][j].addComponent(influenceOfCurrentComponent);
+				 squares[i][j].addComponent(influenceOfWindComponent);
+				 squares[i][j].addComponent(influenceOfDiffusionComponent);
 				// squares[i][j].addComponent(fileOutputComponent);
 				squares[i][j].addComponent(spreadingComponent);
 				squares[i][j].addComponent(removeComponent);
 			}
 		}
 		GraphicsSystem graphicsSystem = new GraphicsSystem();
+		
 		sea.setGraphicsSystem(graphicsSystem);
 		graphicsSystem.setSquares(squares);
+		graphicsSystem.setSquareSize((int) graphicsSquareSize);
+		graphicsSystem.setMaxMass(graphicsMaxMass);
 		GUI gui = new GUI(program, graphicsSystem, mainLoop);
 		gui.initialize(program.getContentPane());
 

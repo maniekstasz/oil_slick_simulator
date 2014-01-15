@@ -20,7 +20,7 @@ import logic.square.Square;
 public class GraphicsSystem extends JComponent implements SymulatorSystem {
 
 	private Square squares[][];
-	private int size = 10;
+	private int squareSize = 10;
 	private float maxMass = 20;
 
 
@@ -41,7 +41,7 @@ public class GraphicsSystem extends JComponent implements SymulatorSystem {
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		}
 		g.setColor(Color.GRAY);
-		drawNetting(g, size);
+		drawNetting(g, squareSize);
 	}
 
 	private void drawNetting(Graphics g, int gridSpace) {
@@ -68,8 +68,8 @@ public class GraphicsSystem extends JComponent implements SymulatorSystem {
 					final float mass = squares[x][y].getMass() > maxMass ? maxMass
 							: squares[x][y].getMass();
 					g.setColor(new Color(0, 0, 0, (mass / maxMass)));
-					g.fillRect((x * size) + 1, (y * size) + 1, (size - 1),
-							(size - 1));
+					g.fillRect((x * squareSize) + 1, (y * squareSize) + 1, (squareSize - 1),
+							(squareSize - 1));
 				}
 			}
 		}
@@ -81,14 +81,18 @@ public class GraphicsSystem extends JComponent implements SymulatorSystem {
 	}
 
 	public int getMaxSquaresWidth() {
-		return (int) Math.floor(this.getWidth() / size);
+		return (int) Math.floor(this.getWidth() / squareSize);
 	}
 
 	public int getMaxSquaresHeight() {
-		return (int) Math.floor(this.getHeight() / size);
+		return (int) Math.floor(this.getHeight() / squareSize);
 	}
 
 	public void setSquares(Square[][] squares) {
 		this.squares = squares;
+	}
+
+	public void setSquareSize(int size) {
+		this.squareSize = size;
 	}
 }

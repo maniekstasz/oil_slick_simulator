@@ -30,11 +30,15 @@ enum Par {
 	C4(10.0f),
    /***************************************/
 	/*stale do pr¹du i aiatru*/
-	currentParameter(1.1f),
-	windParameter(0.03f);
+	currentParameterX(0.11f),
+	currentParameterY(0.11f),
+	windParameterX(-0.1f),
+	windParameterY(0.1f),
 	
 	
-
+	// grafika
+	graphicsSquareSize(10),
+	graphicsMaxMass(20);
 
 
 	final float defaultValue;
