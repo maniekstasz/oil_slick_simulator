@@ -11,13 +11,15 @@ import logic.square.Square;
 public class CenterOfMassSystem implements SymulatorSystem {
 
 	Vector2 centerOfMass=null;
-	private float temperature=273;
+	private float temperature;
 	private Vector2 wind;  // wind and current in the square which it's located center of mass
 	private Vector2 current;
 	private float squareDimension;
 	
 	public void reset() {
-		// TODO Auto-generated method stub
+		centerOfMass=null;
+		wind=null;
+		current=null;
 		
 	}
 	
