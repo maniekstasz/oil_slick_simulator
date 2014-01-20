@@ -34,14 +34,14 @@ public class Sea implements ComponentManager, SymulatorObject {
 		return centerOfMassSystem;
 	}
 
-	public Sea(int x, int y, Vector2 current, Vector2 wind){
+	public Sea(int x, int y, Vector2 current, Vector2 wind, float T){
 		
 		this.x = x;
 		this.y = y;
 		squares = new Square[x][y];
 		for(x = 0; x < squares.length; x++){
 			for(y = 0; y < squares[x].length; y++){
-				squares[x][y] = new Square(new Vector2(x,y), current,wind,273);
+				squares[x][y] = new Square(new Vector2(x,y), current,wind,T);
 			}
 		}
 		squareComponents = new ArrayList<SquareComponent>();
@@ -82,8 +82,9 @@ public class Sea implements ComponentManager, SymulatorObject {
 		// TODO: create some list of systems
 	
 		spillSystem.update(timeDelta, this);
-		spreadingSystem.update(timeDelta, this);
 		centerOfMassSystem.update(timeDelta, this);
+		spreadingSystem.update(timeDelta, this);
+		
 		
 		for(int x = 0; x < squares.length; x++){
 			for(int y = 0; y < squares[x].length; y++){

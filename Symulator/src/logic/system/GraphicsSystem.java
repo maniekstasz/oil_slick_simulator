@@ -14,20 +14,31 @@ import logic.core.Sea;
 import logic.square.Square;
 
 /**
- * @author Szymon Konicki
- * System odpowiedzialny za rysowanie obrazowanie aktualnego stanu symulacji
+ * @author Szymon Konicki System odpowiedzialny za rysowanie obrazowanie
+ *         aktualnego stanu symulacji
  */
 public class GraphicsSystem extends JComponent implements SymulatorSystem {
 
 	private Square squares[][];
-	private int squareSize = 10;
-	private float maxMass = 20;
+	private int graphicsSquareSize = 10;
+	private float maxThickness = 20;
 
+	private float volumeOfOilPoint;
+	private int areaOfSquare;
 
 	@Override
 	public void reset() {
 		this.repaint();
 
+	}
+
+	public GraphicsSystem(int squareSize, int graphicsSquareSize,
+			float startVolume, float numberOfOilPoints, float maxThickness) {
+		this.graphicsSquareSize = graphicsSquareSize;
+		
+		this.areaOfSquare = squareSize * squareSize;
+		this.maxThickness = maxThickness;
+		this.volumeOfOilPoint=startVolume/numberOfOilPoints;
 	}
 
 	@Override
@@ -41,7 +52,7 @@ public class GraphicsSystem extends JComponent implements SymulatorSystem {
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		}
 		g.setColor(Color.GRAY);
-		drawNetting(g, squareSize);
+		drawNetting(g, graphicsSquareSize);
 	}
 
 	private void drawNetting(Graphics g, int gridSpace) {
@@ -65,34 +76,38 @@ public class GraphicsSystem extends JComponent implements SymulatorSystem {
 		for (x = 0; x < squares.length; ++x) {
 			for (y = 0; y < squares[x].length; ++y) {
 				if (squares[x][y].getMass() != 0) {
-					final float mass = squares[x][y].getMass() > maxMass ? maxMass
-							: squares[x][y].getMass();
-					g.setColor(new Color(0, 0, 0, (mass / maxMass)));
-					g.fillRect((x * squareSize) + 1, (y * squareSize) + 1, (squareSize - 1),
-							(squareSize - 1));
+					final float mass = squares[x][y].getMass();
+					
+					float volumePerSquare=mass*volumeOfOilPoint;
+					float thickness=volumePerSquare/areaOfSquare;
+					//System.out.println(thickness);
+					float color=thickness/maxThickness>=1?1.0f:thickness/maxThickness;
+					g.setColor(new Color(0, 0, 0, color));
+					g.fillRect((x * graphicsSquareSize) + 1, (y * graphicsSquareSize) + 1, (graphicsSquareSize - 1),
+							(graphicsSquareSize - 1));
 				}
 			}
 		}
 
 	}
 
-	public void setMaxMass(float maxMass) {
-		this.maxMass = maxMass;
-	}
+	// public void setMaxMass(float maxThickness) {
+	// this.maxThickness = maxThickness;
+	// }
 
 	public int getMaxSquaresWidth() {
-		return (int) Math.floor(this.getWidth() / squareSize);
+		return (int) Math.floor(this.getWidth() / graphicsSquareSize);
 	}
 
 	public int getMaxSquaresHeight() {
-		return (int) Math.floor(this.getHeight() / squareSize);
+		return (int) Math.floor(this.getHeight() / graphicsSquareSize);
 	}
 
 	public void setSquares(Square[][] squares) {
 		this.squares = squares;
 	}
 
-	public void setSquareSize(int size) {
-		this.squareSize = size;
-	}
+	// public void setSquareSize(int size) {
+	// this.graphicSquareSize = size;
+	// }
 }

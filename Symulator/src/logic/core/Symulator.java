@@ -46,7 +46,7 @@ public class Symulator {
 		configure(program, null);
 	}
 
-//	@SuppressWarnings("unused")
+	// @SuppressWarnings("unused")
 	public void configure(Program program, File inputFile) {
 
 		HashMap<Par, Float> map = createMapOfParameters(program, inputFile);
@@ -77,6 +77,7 @@ public class Symulator {
 				: map.get(Par.densityOfOil));
 		float diffusionCoefficent = (map.get(Par.diffusionCoefficent) == null ? Par.diffusionCoefficent.defaultValue
 				: map.get(Par.diffusionCoefficent));
+		float T = (map.get(Par.T) == null ? Par.T.defaultValue : map.get(Par.T));
 		float viscosity = (map.get(Par.viscosity) == null ? Par.viscosity.defaultValue
 				: map.get(Par.viscosity));
 		float rk4TimeStep = (map.get(Par.rk4TimeStep) == null ? Par.rk4TimeStep.defaultValue
@@ -102,21 +103,21 @@ public class Symulator {
 		float currentY = (map.get(Par.currentY) == null ? Par.currentX.defaultValue
 				: map.get(Par.currentY));
 		float windX = (map.get(Par.windX) == null ? Par.windX.defaultValue
-				: map.get(Par.currentX));
-		float windY= (map.get(Par.windY) == null ? Par.windY.defaultValue
+				: map.get(Par.windX));
+		float windY = (map.get(Par.windY) == null ? Par.windY.defaultValue
 				: map.get(Par.windY));
-		float currentParameter= (map.get(Par.currentParameter) == null ? Par.currentParameter.defaultValue
+
+		float currentParameter = (map.get(Par.currentParameter) == null ? Par.currentParameter.defaultValue
 				: map.get(Par.currentParameter));
-		float windParameter= (map.get(Par.windParameter) == null ? Par.windParameter.defaultValue
+		float windParameter = (map.get(Par.windParameter) == null ? Par.windParameter.defaultValue
 				: map.get(Par.windParameter));
-		
-		
-		
+
 		float graphicsSquareSize = (map.get(Par.graphicsSquareSize) == null ? Par.graphicsSquareSize.defaultValue
 				: map.get(Par.graphicsSquareSize));
-		float graphicsMaxMass = (map.get(Par.graphicsMaxMass) == null ? Par.graphicsMaxMass.defaultValue
-				: map.get(Par.graphicsMaxMass));
-		Sea sea = new Sea(x, y, new Vector2(currentX, currentY),new Vector2(windX, windY));
+		float maxThickness = (map.get(Par.maxThickness) == null ? Par.maxThickness.defaultValue
+				: map.get(Par.maxThickness));
+		Sea sea = new Sea(x, y, new Vector2(currentX, currentY), new Vector2(
+				windX, windY), T);
 
 		TimeSystem timeSystem = new TimeSystem(timeDelta);
 
@@ -153,15 +154,17 @@ public class Symulator {
 		// oilPoint components
 		RemoveComponent removeComponent = new RemoveComponent(
 				differentalEquationsSpreadingSystem);
-		InfluenceOfCurrentComponent influenceOfCurrentComponent = new InfluenceOfCurrentComponent(currentParameter);
+		InfluenceOfCurrentComponent influenceOfCurrentComponent = new InfluenceOfCurrentComponent(
+				currentParameter);
 		InfluenceOfDiffusionComponent influenceOfDiffusionComponent = new InfluenceOfDiffusionComponent(
 				diffusionCoefficent);
-		InfluenceOfWindComponent influenceOfWindComponent = new InfluenceOfWindComponent(windParameter);
+		InfluenceOfWindComponent influenceOfWindComponent = new InfluenceOfWindComponent(
+				windParameter);
 		MovementComponent movementComponent = new MovementComponent();
 		OilPointChangeSquareComponent oilPointChangeSquareComponent = new OilPointChangeSquareComponent(
 				oilPointSquareSystem);
-//		FileOutputComponent fileOutputComponent = new FileOutputComponent(
-//				timeSystem);
+		// FileOutputComponent fileOutputComponent = new FileOutputComponent(
+		// timeSystem);
 
 		// SpreadingComponent spreadingComponent = new SpreadingComponent(
 		// differentalEquationsSpreadingSystem, centerOfMassSystem);
@@ -178,29 +181,28 @@ public class Symulator {
 			for (int j = 0; j < y; j++) {
 				squares[i][j].addComponent(movementComponent);
 				squares[i][j].addComponent(oilPointChangeSquareComponent);
-				 squares[i][j].addComponent(influenceOfCurrentComponent);
-				 squares[i][j].addComponent(influenceOfWindComponent);
-				 squares[i][j].addComponent(influenceOfDiffusionComponent);
+				squares[i][j].addComponent(influenceOfCurrentComponent);
+				squares[i][j].addComponent(influenceOfWindComponent);
+				squares[i][j].addComponent(influenceOfDiffusionComponent);
 				// squares[i][j].addComponent(fileOutputComponent);
 				squares[i][j].addComponent(spreadingComponent);
 				squares[i][j].addComponent(removeComponent);
 			}
 		}
-		GraphicsSystem graphicsSystem = new GraphicsSystem();
-		
+		GraphicsSystem graphicsSystem = new GraphicsSystem(
+				(int) squareDimension, (int) graphicsSquareSize,
+				startVolume,numberOfOilPoints,maxThickness);
+
 		sea.setGraphicsSystem(graphicsSystem);
 		graphicsSystem.setSquares(squares);
-		graphicsSystem.setSquareSize((int) graphicsSquareSize);
-		graphicsSystem.setMaxMass(graphicsMaxMass);
+	
+		
 		GUI gui = new GUI(program, graphicsSystem, mainLoop);
 		gui.initialize(program.getContentPane());
 
-		System.out.println(map);
+		// System.out.println(map);
 
 	}
-	
-	
-	
 
 	private HashMap<Par, Float> createMapOfParameters(Program program,
 			File inputfile) {

@@ -166,9 +166,7 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 		void solve(float tStart, float tEnd, float delta) {
 			float actualTime = tStart;
 			while (actualTime < tEnd) {
-				float thicknes = (float) (values[V_VOLUME] / values[A_AREA]);
-				D = (float) (0.11 * (1 + W) * (1 + W) * 1.0 / (1 + 50
-						* Math.pow(values[MI_VISCOSITY], 0.5) * thicknes * st));
+			
 				k1 = function.evaluate(actualTime, values);
 				k2 = function.evaluate(actualTime + delta / 2,
 						add(values, multiple(delta / 2, k1)));
@@ -213,7 +211,7 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 	public void update(float timeDelta, Sea sea) {
 		this.previousDiameter = (float) Math.sqrt(values[A_AREA] * 4 / Math.PI);
 		this.prevoiusVolume = (float) values[V_VOLUME];
-
+		
 		Vector2 vectorOfWind = centerOfMassSystem.getWind();
 		if (vectorOfWind != null) {
 			this.W = vectorOfWind.length();
@@ -221,23 +219,37 @@ public class DifferentalEquationsSpreadingSystem implements SpreadingSystem {
 			this.W = 0;
 		}
 
+		float thicknes = (float) (values[V_VOLUME] / values[A_AREA]);
+		//System.out.println("grub "+thicknes);
+		D = (float) (0.11 * (1 + W) * (1 + W) * 1.0 / (1 + 50
+				* Math.pow(values[MI_VISCOSITY], 0.5) * thicknes * st));
+		
+		//System.out.println("Wiatr "+W+ " D "+D);
+	
 		T = centerOfMassSystem.getTemperature();
+		//System.out.println("T "+T);
 		float totalTime = timeSystem.getTotalTime();
+		//System.out.println("totaltime "+totalTime);
 		float deltaTime = timeSystem.getTimeDelta();
 		float density = (float) (values[Fe_EVAPRATION] * densityOfWater + (1 - values[Y_CONT_WATER])
 				* (densityOfOil + C3 * values[Fe_EVAPRATION]));// ??
-
+		//System.out.println("gest "+density);
+		//System.out.println("Fe " + values[0] + "   V " + values[1] + "  Y "
+				//+ values[2] + " A " + values[3] + "   mi " + values[4]);
 		rK4.solve(totalTime, totalTime + deltaTime, rk4TimeStep);
 		diameter = (float) Math.sqrt(values[A_AREA] * 4 / Math.PI);
 //		System.out.println("D " + D);
-//		System.out.println("Fe " + values[0] + "   V " + values[1] + "  Y "
-//				+ values[2] + " " + values[3] + "   mi " + values[4]);
-
+	
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
+	values[0]=startValues[0];
+	values[1]=startValues[1];
+	values[2]=startValues[2];
+	values[3]=startValues[3];
+	values[4]=startValues[4];
+	
 
 	}
 

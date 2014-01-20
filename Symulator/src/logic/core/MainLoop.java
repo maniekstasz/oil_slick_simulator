@@ -31,8 +31,9 @@ public class MainLoop implements SymulatorObject {
 	 */
 	public void loop() {
 //		while (!stop) {
-			timeSystem.update(timeSystem.getTimeDelta(), sea);
+			
 			sea.update(timeSystem.getTimeDelta());
+			timeSystem.update(timeSystem.getTimeDelta(), sea);
 
 //		}
 	}
